@@ -1,0 +1,27 @@
+services:
+    template:
+        build: ./apps/template
+        volumes:
+            - ./apps/template/src:/root/template
+        tty: true
+        restart: always
+
+    auth:
+        build: ./auth
+        volumes:
+            - ./auth/src:/root/auth
+        tty: true
+        restart: always
+
+    nginx:
+        restart: always
+        image: nginx:latest
+        container_name: nginx
+        ports:
+            - "8447:80"
+        volumes:
+            # NGINXのコンフィグファイルをホストOSから、ゲストOSに連結する
+            - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+            - ./nginx/keys:/etc/nginx/keys
+            - ./nginx/statics:/etc/nginx/static/statics
+        tty: true
