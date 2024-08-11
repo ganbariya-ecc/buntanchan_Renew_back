@@ -2,6 +2,6 @@ FROM golang:1.22.3-bookworm
 
 RUN apt update
 
-WORKDIR /root/auth
+WORKDIR /root/template
 
 COPY ./src .
