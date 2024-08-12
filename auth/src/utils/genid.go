@@ -1,6 +1,8 @@
 package utils
 
 import (
+	"strings"
+
 	"github.com/google/uuid"
 )
 
@@ -13,5 +15,6 @@ func GenID() (string) {
         panic(err)
     }
 
-	return genid.String()
+	// - を削除
+	return strings.ReplaceAll(genid.String(),"-","")
 }

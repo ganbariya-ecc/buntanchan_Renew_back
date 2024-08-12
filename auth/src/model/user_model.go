@@ -3,6 +3,8 @@ package model
 import (
 	"auth/utils"
 	"log"
+	"os"
+	"path"
 	"time"
 )
 
@@ -10,7 +12,7 @@ type AType string
 
 const (
 	AuthType_O = AType("Oauth2")
-	AuthType_P = AType("Password")
+	AuthType_B = AType("Basic")
 )
 
 type User struct {
@@ -23,7 +25,7 @@ type User struct {
 
 	// Oauth 関連
 	Email    string //メールアドレス
-	Provider string `gorm:"default:'None'"` //プロバイダー
+	Provider string //プロバイダー
 
 	// 認証関連
 	Password string //パスワードハッシュ
@@ -75,7 +77,12 @@ func CreateOauthUser(UserName string, Labels []UserLabel, email string, provider
 		return "", result.Error
 	}
 
-	return UserID, nil
+	//ファイルをコピーする
+
+	// アイコンをコピーする
+	err := utils.CopyFile(DefaultUserIcon,path.Join(UserIconDir,UserID + ".jpeg"))
+
+	return UserID, err
 }
 
 // パスワード認証ユーザーを作成
@@ -96,7 +103,7 @@ func CreateUser(UserName string, Labels []UserLabel, Password string) (string, e
 		UserID:   UserID,
 		UserName: UserName,
 		Labels:   Labels,
-		AuthType: AuthType_P,
+		AuthType: AuthType_B,
 		Email:    "",
 		Provider: "",
 		Password: hashed,
@@ -111,5 +118,67 @@ func CreateUser(UserName string, Labels []UserLabel, Password string) (string, e
 		return "", result.Error
 	}
 
-	return UserID, nil
+	// アイコンをコピーする
+	err = utils.CopyFile(DefaultUserIcon,path.Join(UserIconDir,UserID + ".jpeg"))
+
+	return UserID, err
+}
+
+// ユーザーIDでユーザを取得する
+func GetUserByID(userid string) (User,error) {
+	// ユーザーデータを格納する変数
+	UserData := User{}
+
+	// ユーザーデータ取得
+	result := dbconn.Where(&User{UserID: userid}).First(&UserData)
+
+	// エラー処理
+	if result.Error != nil {
+		return UserData,result.Error
+	}
+
+	return UserData,nil
+}
+
+//ラベルを取得する関数
+func (usr User) GetLabels() ([]UserLabel,error) {
+	//ラベルを格納する変数
+	var labels []UserLabel
+
+	// ラベルを取得
+	err := dbconn.Model(usr).Association("Labels").Find(&labels)
+	return labels,err
+}
+
+// ユーザーを削除する
+func (usr User) Delete() (error) {
+	// ラベルを削除する
+	result := dbconn.Where(&UserLabel{
+		UID: usr.UserID,
+	}).Unscoped().Delete(&UserLabel{})
+
+	// エラー処理
+	if result.Error != nil {
+		return result.Error
+	}
+
+	// ユーザーアイコンを削除する
+	err := os.Remove(path.Join(UserIconDir,usr.UserID + ".jpeg"))
+
+	// エラー処理
+	if err != nil {
+		return err
+	}
+
+	// ユーザーを削除する
+	result = dbconn.Where(&User{
+		UserID: usr.UserID,
+	}).Unscoped().Delete(&User{})
+
+	// エラー処理
+	if result.Error != nil {
+		return result.Error
+	}
+
+	return nil
 }

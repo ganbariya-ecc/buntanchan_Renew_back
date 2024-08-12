@@ -14,3 +14,7 @@ dockerfile の最後に cmd を追加してコンテナ起動時に起動する�
 
 ## アクセスする際は
 docker compose で公開したnginx のポート番号に https://localhost:8447/statics/ とかでアクセスすればok
+
+## ユーザーアイコン
+- サイズは256 × 256 にする
+- ファイル形式はjpeg にする

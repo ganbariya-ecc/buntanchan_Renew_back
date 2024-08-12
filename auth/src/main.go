@@ -36,7 +36,7 @@ func Init() {
 	controller.Init()
 
 	//モデル初期化
-	model.Init()
+	model.Init(os.Getenv("DBPATH"))
 }
 
 func Test() {
@@ -47,10 +47,10 @@ func Test() {
 	controller.Init()
 	
 	// ファイル削除
-	os.Remove("./auth.db")
+	os.Remove("./test.db")
 
 	//モデル初期化
-	model.Init()
+	model.Init("./test.db")
 
 	//データーベーステスト
 	model.Test()
