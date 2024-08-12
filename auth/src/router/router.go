@@ -18,5 +18,10 @@ func InitRouter() (*echo.Echo) {
 	// Routes
 	router.GET("/", controller.Hello)
 
+	oauthg := router.Group("/oauth")
+	// Oauth エンドポイント
+	oauthg.GET("/:provider",controller.StartOauth)
+	oauthg.GET("/callback/:provider",controller.CallbackOauth)
+
 	return router
 }

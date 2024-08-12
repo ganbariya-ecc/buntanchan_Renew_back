@@ -1,2 +1,4 @@
 __debug_bin*
 /nginx/keys/*
+auth/src/auth.db
+auth/src/.env
