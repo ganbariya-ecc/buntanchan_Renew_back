@@ -14,7 +14,7 @@ func Hello(ctx echo.Context) error {
 
 	// エラー処理
 	if err == nil {
-		log.Println("userid : " + userid)
+		log.Println("userid : " + userid.( string ))
 	} else {
 		log.Println(err)
 	}

@@ -57,5 +57,12 @@ func CallbackOauth(ctx echo.Context) error {
 		return ctx.JSON(http.StatusInternalServerError,nil)
 	}
 
+	// 認証済みにする
+	err = utils.SetData(ctx,"authorized",true)
+	if err != nil {
+		log.Println("failed to set authorized : " + err.Error())
+		return ctx.JSON(http.StatusInternalServerError,nil)
+	}
+
 	return ctx.Redirect(http.StatusFound,"/auth/")
 }

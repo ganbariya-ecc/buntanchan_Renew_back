@@ -46,6 +46,12 @@ func BasicLogin(ctx echo.Context) error {
 		return err
 	}
 
+	// 認証済みにする
+	err = utils.SetData(ctx, "authorized",true)
+	if err != nil {
+		return err
+	}
+
 	return ctx.JSON(http.StatusOK, userData.UserID)
 }
 
@@ -76,6 +82,12 @@ func BasicSignup(ctx echo.Context) error {
 		return err
 	}
 
+	// 認証済みにする
+	err = utils.SetData(ctx, "authorized",true)
+	if err != nil {
+		return err
+	}
+
 	log.Println(userData)
 
 	return ctx.JSON(http.StatusOK, userData.UserID)
@@ -87,6 +99,12 @@ func Logout(ctx echo.Context) error {
 	AuthSession, err := session.Get("AuthSession", ctx)
 
 	// エラー処理
+	if err != nil {
+		return err
+	}
+
+	// 認証済み解除
+	err = utils.SetData(ctx, "authorized",false)
 	if err != nil {
 		return err
 	}

@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/gorilla/sessions"
@@ -8,7 +9,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func SetData(ctx echo.Context, key string, value string) error {
+func SetData(ctx echo.Context, key string, value interface{}) error {
 	// セッション取得
 	AuthSession, err := session.Get("AuthSession", ctx)
 
@@ -33,7 +34,7 @@ func SetData(ctx echo.Context, key string, value string) error {
 	return AuthSession.Save(ctx.Request(), ctx.Response())
 }
 
-func GetValue(ctx echo.Context, key string) (string, error) {
+func GetValue(ctx echo.Context, key string) (interface{}, error) {
 	// セッション取得
 	AuthSession, err := session.Get("AuthSession", ctx)
 
@@ -51,5 +52,5 @@ func GetValue(ctx echo.Context, key string) (string, error) {
 	}
 
 	// トークン取得
-	return "", nil
+	return "", errors.New("data not found")
 }

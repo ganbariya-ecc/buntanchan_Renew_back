@@ -19,6 +19,21 @@ func AuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 		// 初期化
 		ctx.Set("userid", "")
 
+		// 認証済みか
+		authorized, err := utils.GetValue(ctx, "authorized")
+
+		// エラー処理
+		if err != nil {
+			log.Println("failed to get authorized : " + err.Error())
+			return ctx.NoContent(http.StatusUnauthorized)
+		}
+
+		// 認証済みじゃない場合
+		if !authorized.(bool) {
+			log.Println("unauthorized")
+			return ctx.NoContent(http.StatusUnauthorized)
+		}
+
 		// UserID取得
 		userid, err := utils.GetValue(ctx, "userid")
 
@@ -29,7 +44,7 @@ func AuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 		}
 
 		// ユーザー取得
-		userData, err := model.GetUserByID(userid)
+		userData, err := model.GetUserByID(userid.(string))
 
 		// エラー処理
 		if err != nil {
@@ -37,7 +52,7 @@ func AuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 			return ctx.NoContent(http.StatusUnauthorized)
 		}
 
-		log.Println("userid : " + userid)
+		log.Println("userid : " + userid.(string))
 		log.Println(userData)
 
 		// ユーザーIDをセット
