@@ -2,6 +2,7 @@ package controller
 
 import (
 	"auth/service"
+	"auth/utils"
 	"context"
 	"log"
 	"net/http"
@@ -41,7 +42,20 @@ func CallbackOauth(ctx echo.Context) error {
 	}
 
 	// Oauth完了
-	service.CallbackOauth(gothUser)
+	_,err = service.CallbackOauth(gothUser)
 
-	return ctx.String(http.StatusOK,"hello world")
+	// エラー処理
+	if err != nil {
+		log.Println("failed to oauth callback : " + err.Error())
+		return ctx.JSON(http.StatusInternalServerError,nil)
+	}
+
+	// セッション保存
+	err = utils.SetData(ctx,"userid",gothUser.UserID)
+	if err != nil {
+		log.Println("failed to set token : " + err.Error())
+		return ctx.JSON(http.StatusInternalServerError,nil)
+	}
+
+	return ctx.Redirect(http.StatusFound,"/auth/")
 }

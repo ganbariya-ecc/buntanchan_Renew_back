@@ -16,7 +16,7 @@ func Test() {
 	os.MkdirAll(UserIconDir,0644)
 
 	// Oauth ユーザーを作成する
-	uid1, err := CreateOauthUser("wao", []UserLabel{
+	uid1, err := CreateOauthUser("wao","111111111111", []UserLabel{
 		CreateLabel("hello"),
 		CreateLabel("world"),
 	}, "admin@example.com", "discord")

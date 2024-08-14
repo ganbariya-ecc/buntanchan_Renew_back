@@ -29,7 +29,7 @@ func CallbackOauth(user goth.User) (string,error) {
 	}
 
 	// ユーザー作成
-	userid,err := model.CreateOauthUser(userName,[]model.UserLabel{},user.Email,user.Provider)
+	userid,err := model.CreateOauthUser(userName,user.UserID,[]model.UserLabel{},user.Email,user.Provider)
 
 	// エラー処理
 	if err != nil {

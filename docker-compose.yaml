@@ -25,3 +25,11 @@ services:
             - ./nginx/keys:/etc/nginx/keys
             - ./nginx/statics:/etc/nginx/static/statics
         tty: true
+
+    redis:
+        image: "redis:latest"
+        ports:
+            - "16379:6379"
+        volumes:
+            - "./databases/redis:/data"
+        restart: always

@@ -9,14 +9,14 @@ import (
 )
 
 func main() {
-	// //初期化
-	// Init()
+	//初期化
+	Init()
 
 	// テスト
-	Test()
+	// Test()
 
-	//サーバー起動
-	// ServerMain()
+	// サーバー起動
+	ServerMain()
 }
 
 func ServerMain() {
@@ -27,7 +27,7 @@ func ServerMain() {
 	router.Logger.Fatal(router.Start("0.0.0.0:3001"))
 }
 
-//初期化
+// 初期化
 func Init() {
 	// env ファイル読み込む
 	utils.LoadEnv()
@@ -45,7 +45,7 @@ func Test() {
 
 	//コントローラー初期化
 	controller.Init()
-	
+
 	// ファイル削除
 	os.Remove("./test.db")
 

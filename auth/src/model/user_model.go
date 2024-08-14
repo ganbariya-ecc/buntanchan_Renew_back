@@ -2,10 +2,13 @@ package model
 
 import (
 	"auth/utils"
+	"errors"
 	"log"
 	"os"
 	"path"
 	"time"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 type AType string
@@ -26,6 +29,7 @@ type User struct {
 	// Oauth 関連
 	Email    string //メールアドレス
 	Provider string //プロバイダー
+	ProviderID string //プロバイダーID
 
 	// 認証関連
 	Password string //パスワードハッシュ
@@ -52,8 +56,35 @@ func CreateLabel(name string) UserLabel {
 	}
 }
 
+// Oauth のユーザーを取得
+func GetOauthUser(provider string,providerid string) (User, error) {
+	// ユーザーデータを格納する変数
+	UserData := User{}
+
+	// ユーザーを取得
+	result := dbconn.Where(&User{
+		Provider: provider,
+		ProviderID: providerid,
+	}).First(&UserData)
+
+	// エラー処理
+	if result.Error != nil {
+		return User{}, result.Error
+	}
+
+	return UserData, nil
+}
+
 // Oauth のユーザーを作成
-func CreateOauthUser(UserName string, Labels []UserLabel, email string, provider string) (string, error) {
+func CreateOauthUser(UserName string,ProviderUserid string, Labels []UserLabel, email string, provider string) (string, error) {
+	//Oauth ユーザーを取得
+	ouser,err := GetOauthUser(provider,ProviderUserid)
+
+	//エラー処理
+	if err == nil {
+		return ouser.UserID, nil
+	}
+
 	//ユーザーID生成
 	UserID := utils.GenID()
 
@@ -64,6 +95,7 @@ func CreateOauthUser(UserName string, Labels []UserLabel, email string, provider
 		Labels:   Labels,
 		AuthType: AuthType_O,
 		Email:    email,
+		ProviderID: ProviderUserid,
 		Provider: provider,
 		Password: "",
 	}
@@ -80,7 +112,7 @@ func CreateOauthUser(UserName string, Labels []UserLabel, email string, provider
 	//ファイルをコピーする
 
 	// アイコンをコピーする
-	err := utils.CopyFile(DefaultUserIcon,path.Join(UserIconDir,UserID + ".jpeg"))
+	err = utils.CopyFile(DefaultUserIcon,path.Join(UserIconDir,UserID + ".jpeg"))
 
 	return UserID, err
 }
@@ -105,6 +137,7 @@ func CreateUser(UserName string, Labels []UserLabel, Password string) (string, e
 		Labels:   Labels,
 		AuthType: AuthType_B,
 		Email:    "",
+		ProviderID: "",
 		Provider: "",
 		Password: hashed,
 	}
@@ -126,6 +159,11 @@ func CreateUser(UserName string, Labels []UserLabel, Password string) (string, e
 
 // ユーザーIDでユーザを取得する
 func GetUserByID(userid string) (User,error) {
+	// バリデーション
+	if userid == "" {
+		return User{},errors.New("userid is empty")
+	}
+
 	// ユーザーデータを格納する変数
 	UserData := User{}
 
@@ -181,4 +219,9 @@ func (usr User) Delete() (error) {
 	}
 
 	return nil
+}
+
+func (usr User) ValidatePassword(Password string) (bool) {
+	//ハッシュ化されたパスワードと入力されたパスワードを比較
+	return bcrypt.CompareHashAndPassword([]byte(usr.Password),[]byte(Password)) == nil
 }
