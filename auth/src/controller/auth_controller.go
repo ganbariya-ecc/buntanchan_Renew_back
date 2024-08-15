@@ -11,8 +11,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-
-
+// ユーザーIDとパスワードの構造体
 type AuthData struct {
 	UserID   string `json:"userid"`
 	UserName string `json:"username"`
@@ -112,5 +111,15 @@ func Logout(ctx echo.Context) error {
 	// セッション削除
 	AuthSession.Options.MaxAge = -1
 
-	return AuthSession.Save(ctx.Request(), ctx.Response())
+	// セッション更新
+	err = AuthSession.Save(ctx.Request(), ctx.Response())
+
+	// エラー処理
+	if err != nil {
+		return err
+	}
+
+	return ctx.JSON(http.StatusOK, map[string]interface{}{
+		"result": "success",
+	}) 
 }

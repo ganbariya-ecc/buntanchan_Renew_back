@@ -46,5 +46,14 @@ func InitRouter() *echo.Echo {
 	// 認証エンドポイント
 	router.POST("/logout", controller.Logout,middlewares.AuthMiddleware)
 
+	// Authed グループ
+	authedg := router.Group("/authed")
+	{
+		// Auth ミドルウェア
+		authedg.Use(middlewares.AuthMiddleware)
+
+		authedg.POST("/jwt", controller.GetJWT)
+	}
+
 	return router
 }

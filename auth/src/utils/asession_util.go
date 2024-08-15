@@ -48,7 +48,7 @@ func GetValue(ctx echo.Context, key string) (interface{}, error) {
 
 	// データを取得
 	if exits {
-		return val.(string), nil
+		return val, nil
 	}
 
 	// トークン取得

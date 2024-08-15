@@ -11,10 +11,10 @@ import (
 
 func AuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(ctx echo.Context) error {
-		// エラーの時はエラーを返す
-		if err := next(ctx); err != nil {
-			ctx.Error(err)
-		}
+		// // エラーの時はエラーを返す
+		// if err := next(ctx); err != nil {
+		// 	return err
+		// }
 
 		// 初期化
 		ctx.Set("userid", "")
@@ -58,6 +58,6 @@ func AuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 		// ユーザーIDをセット
 		ctx.Set("userid", userid)
 
-		return nil
+		return next(ctx)
 	}
 }
