@@ -27,7 +27,7 @@ func ServerMain() {
 	router.Logger.Fatal(router.Start("0.0.0.0:3001"))
 }
 
-// 初期化
+// 初期化 
 func Init() {
 	// env ファイル読み込む
 	utils.LoadEnv()

@@ -31,5 +31,13 @@ services:
         ports:
             - "16379:6379"
         volumes:
-            - "./databases/redis:/data"
+            - "./databases/MainRedis:/data"
+        restart: always
+    
+    aredis:
+        image: "redis:latest"
+        ports:
+            - "26379:6379"
+        volumes:
+            - "./databases/AuthRedis:/data"
         restart: always

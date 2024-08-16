@@ -1,0 +1,25 @@
+syntax = "proto3";
+package authsdk;
+
+option go_package = "../sdks/authsdk";
+
+message UserResult {
+    bool Success = 1;
+    User user = 2;
+}
+
+message AuthData {
+    string token = 1;
+}
+
+message User {
+    string UserID = 1;
+    string UserName = 2;
+    string AuthType = 3;
+    string Email = 5;
+    string CreatedAt = 6;
+}
+
+service AuthService {
+    rpc Auth(AuthData) returns (UserResult) {}
+}

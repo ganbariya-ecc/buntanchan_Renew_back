@@ -3,13 +3,18 @@ package router
 import (
 	"auth/controller"
 	"auth/middlewares"
-	"os"
+	"context"
+	"log"
+	"net/http"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 
 	"github.com/gorilla/sessions"
 	"github.com/labstack/echo-contrib/session"
+
+	"github.com/rbcervilla/redisstore/v9"
+	"github.com/redis/go-redis/v9"
 )
 
 func InitRouter() *echo.Echo {
@@ -20,8 +25,30 @@ func InitRouter() *echo.Echo {
 	router.Use(middleware.Logger())
 	router.Use(middleware.Recover())
 
+	// 認証用のRedis
+	client := redis.NewClient(&redis.Options{
+        Addr:     "aredis:6379",
+    })
+
+    // New default RedisStore
+    store, err := redisstore.NewRedisStore(context.Background(), client)
+    if err != nil {
+        log.Fatal("failed to create redis store: ", err)
+    }
+
+    // Example changing configuration for sessions
+    store.KeyPrefix("AuthSession_")
+    store.Options(sessions.Options{
+        Path:   "/",
+        Domain: "",
+        MaxAge:  86400 * 365,
+		SameSite: http.SameSiteLaxMode,
+		Secure:   true,
+		HttpOnly: true,
+    })
+
 	// ミドルウェア設定
-	router.Use(session.Middleware(sessions.NewCookieStore([]byte(os.Getenv("SESSION_KEY")))))
+	router.Use(session.Middleware(store))
 
 	// Routes
 	router.GET("/", controller.Hello)
