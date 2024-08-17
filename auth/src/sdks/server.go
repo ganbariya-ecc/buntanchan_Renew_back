@@ -22,7 +22,7 @@ func StartServer(bindAddr string) error {
 	}
 
 	// 鍵読み込み
-	cred, err := credentials.NewClientTLSFromFile("./server.crt", "./server.key")
+	cred, err := credentials.NewServerTLSFromFile("./server.crt", "./server.key")
 	if err != nil {
 		log.Fatal(err)
 	}

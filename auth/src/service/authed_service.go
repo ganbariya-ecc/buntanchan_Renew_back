@@ -12,49 +12,49 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-func GenJWT(userid string) (string,*utils.HttpError) {
+func GenJWT(userid string) (string, *utils.HttpError) {
 	// JWT の有効期限取得
 	ExpirySec := os.Getenv("EXPIRYSEC")
 
 	// 数字に変換
-	ExpirySecInt,err := strconv.Atoi(ExpirySec)
+	ExpirySecInt, err := strconv.Atoi(ExpirySec)
 
 	// エラー処理
 	if err != nil {
-		return "",utils.NewHttpError(http.StatusInternalServerError,"failed to convert EXPIRYSEC")
+		return "", utils.NewHttpError(http.StatusInternalServerError, "failed to convert EXPIRYSEC")
 	}
 
 	// JWT作成
-	token := jwt.NewWithClaims(SignMethod,jwt.MapClaims{
-		"userid" : userid,
-		"exp" : utils.NowTime().Add(time.Second * time.Duration(ExpirySecInt)).Unix(),
+	token := jwt.NewWithClaims(SignMethod, jwt.MapClaims{
+		"userid": userid,
+		"exp":    utils.NowTime().Add(time.Second * time.Duration(ExpirySecInt)).Unix(),
 	})
 
 	// jwt 署名
-	tokenString,err := token.SignedString([]byte(JWT_KEY))
+	tokenString, err := token.SignedString([]byte(JWT_KEY))
 
 	// エラー処理
 	if err != nil {
-		return "",utils.NewHttpError(http.StatusInternalServerError,"failed to sign token")
+		return "", utils.NewHttpError(http.StatusInternalServerError, "failed to sign token")
 	}
 
-	return tokenString,nil
+	return tokenString, nil
 }
 
 // JWT を検証してユーザーを返す
-func ValidateJwt(tokenString string) (model.User,error) {
+func ValidateJwt(tokenString string) (model.User, error) {
 	// トークンを検証
-	token,err := jwt.Parse(tokenString,func(token *jwt.Token) (interface{}, error) {
-		if _,ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
 		}
 
-		return []byte(tokenString),nil
+		return []byte(JWT_KEY), nil
 	})
 
 	// エラー処理
 	if err != nil {
-		return model.User{},err
+		return model.User{}, err
 	}
 
 	// 検証できたか
@@ -65,6 +65,6 @@ func ValidateJwt(tokenString string) (model.User,error) {
 		// ユーザーを取得
 		return model.GetUserByID(userid.(string))
 	} else {
-		return model.User{},err
+		return model.User{}, err
 	}
 }

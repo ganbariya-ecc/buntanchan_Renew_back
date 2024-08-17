@@ -5,6 +5,13 @@ services:
             - ./apps/template/src:/root/template
         tty: true
         restart: always
+    
+    test:
+        build: ./apps/test
+        volumes:
+            - ./apps/test/src:/root/test
+        tty: true
+        restart: always
 
     auth:
         build: ./auth

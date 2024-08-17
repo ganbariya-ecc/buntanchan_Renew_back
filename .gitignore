@@ -10,3 +10,4 @@ server.csr
 server.key
 ca.key
 ca.cert
+ca.srl
