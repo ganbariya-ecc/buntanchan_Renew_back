@@ -4,7 +4,9 @@ import (
 	"auth/controller"
 	"auth/model"
 	"auth/router"
+	"auth/sdks"
 	"auth/utils"
+	"log"
 	"os"
 )
 
@@ -20,6 +22,17 @@ func main() {
 }
 
 func ServerMain() {
+	// マルチスレッドで開始
+	go func ()  {
+		// GRPC サーバー起動
+		err := sdks.StartServer(":9000")
+
+		// エラー処理
+		if err != nil {
+			log.Fatalln("faild to start sdk server : " + err.Error())
+		}
+	}()
+
 	// ルーター初期化
 	router := router.InitRouter()
 

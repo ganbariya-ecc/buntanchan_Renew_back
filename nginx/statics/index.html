@@ -11,52 +11,10 @@
     <h1>hello world</h1>
 
     <button onclick="GetJwt()">GetJwt</button>
-    <button onclick="Login()">Login</button>
+    <button onclick="Login('b5d019ed22ae488b845872e035c42362','password')">Login</button>
     <button onclick="Logout()">Logout</button>
 
-    <script>
-        async function Logout() {
-            const req = await fetch("/auth/logout",{
-                method: "POST",
-            });
-
-            if (req.status === 200) {
-                console.log(await req.json());
-            }
-        }
-
-        async function GetJwt() {
-            const req = await fetch("/auth/authed/jwt",{
-                method: "POST",
-            });
-
-            if (req.status === 200) {
-                console.log(await req.json());
-            }
-        }
-
-        async function Login() {
-            const myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/json");
-            
-            const raw = JSON.stringify({
-                "userid": "b5d019ed22ae488b845872e035c42362",
-                "password": "password"
-            });
-
-            const requestOptions = {
-                method: "POST",
-                headers: myHeaders,
-                body: raw,
-                redirect: "follow"
-            };
-
-            fetch("https://localhost:8447/auth/login", requestOptions)
-                .then((response) => response.text())
-                .then((result) => console.log(result))
-                .catch((error) => console.error(error));
-        }
-    </script>
+    <script src="./scripts/authsdk.js"></script>
 </body>
 
 </html>
