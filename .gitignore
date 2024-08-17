@@ -5,3 +5,8 @@ auth/src/.env
 auth/src/assets/UserIcons/
 auth/src/test.db
 databases/
+server.crt
+server.csr
+server.key
+ca.key
+ca.cert

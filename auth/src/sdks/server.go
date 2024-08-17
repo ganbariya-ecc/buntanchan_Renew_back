@@ -8,6 +8,8 @@ import (
 
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
+
+	"google.golang.org/grpc/credentials"
 )
 
 func StartServer(bindAddr string) error {
@@ -19,8 +21,14 @@ func StartServer(bindAddr string) error {
 		return err
 	}
 
+	// 鍵読み込み
+	cred, err := credentials.NewClientTLSFromFile("./server.crt", "./server.key")
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	// GRPC サーバー起動
-	grpcServer := grpc.NewServer()
+	grpcServer := grpc.NewServer(grpc.Creds(cred))
 
 	// AuthService構造体のアドレスを渡すことで、クライアントからAuthリクエストされると
 	// Authメソッドが呼ばれるようになる
