@@ -25,7 +25,7 @@ func ServerMain() {
 	// マルチスレッドで開始
 	go func ()  {
 		// GRPC サーバー起動
-		err := sdks.StartServer(":9000")
+		err := sdks.StartServer(os.Getenv("GRPC_BindAddr"))
 
 		// エラー処理
 		if err != nil {
@@ -37,7 +37,7 @@ func ServerMain() {
 	router := router.InitRouter()
 
 	// Start server
-	router.Logger.Fatal(router.Start("0.0.0.0:3001"))
+	router.Logger.Fatal(router.Start(os.Getenv("BindAddr")))
 }
 
 // 初期化 
