@@ -20,7 +20,7 @@ func AuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 		ctx.Set("userid", "")
 
 		// 認証済みか
-		authorized, err := utils.GetValue(ctx, "authorized")
+		authorized, err := utils.GetAuth(ctx, "authorized")
 
 		// エラー処理
 		if err != nil {
@@ -35,7 +35,7 @@ func AuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 		}
 
 		// UserID取得
-		userid, err := utils.GetValue(ctx, "userid")
+		userid, err := utils.GetAuth(ctx, "userid")
 
 		// エラー処理
 		if err != nil {

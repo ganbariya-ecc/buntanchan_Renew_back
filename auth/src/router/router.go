@@ -27,31 +27,34 @@ func InitRouter() *echo.Echo {
 
 	// 認証用のRedis
 	client := redis.NewClient(&redis.Options{
-        Addr:     "aredis:6379",
-    })
+		Addr: "aredis:6379",
+	})
 
-    // New default RedisStore
-    store, err := redisstore.NewRedisStore(context.Background(), client)
-    if err != nil {
-        log.Fatal("failed to create redis store: ", err)
-    }
+	// New default RedisStore
+	store, err := redisstore.NewRedisStore(context.Background(), client)
+	if err != nil {
+		log.Fatal("failed to create redis store: ", err)
+	}
 
-    // Example changing configuration for sessions
-    store.KeyPrefix("AuthSession_")
-    store.Options(sessions.Options{
-        Path:   "/",
-        Domain: "",
-        MaxAge:  86400 * 365,
+	// Example changing configuration for sessions
+	store.KeyPrefix("AuthSession_")
+	store.Options(sessions.Options{
+		Path:     "/",
+		Domain:   "",
+		MaxAge:   86400 * 365,
 		SameSite: http.SameSiteLaxMode,
 		Secure:   true,
 		HttpOnly: true,
-    })
+	})
+
+	// 静的ファイル提供
+	router.Static("/", "./statics")
 
 	// ミドルウェア設定
 	router.Use(session.Middleware(store))
 
 	// Routes
-	router.GET("/", controller.Hello)
+	// router.GET("/", controller.Hello)
 
 	// Oauth グループ
 	oauthg := router.Group("/oauth")
@@ -71,7 +74,7 @@ func InitRouter() *echo.Echo {
 	router.POST("/signup", controller.BasicSignup)
 
 	// 認証エンドポイント
-	router.POST("/logout", controller.Logout,middlewares.AuthMiddleware)
+	router.POST("/logout", controller.Logout, middlewares.AuthMiddleware)
 
 	// Authed グループ
 	authedg := router.Group("/authed")
@@ -80,6 +83,14 @@ func InitRouter() *echo.Echo {
 		authedg.Use(middlewares.AuthMiddleware)
 
 		authedg.POST("/jwt", controller.GetJWT)
+	}
+
+	// 管理者のグループ
+	adming := router.Group("/admin")
+	{
+		adming.POST("/signup",controller.AdminSignup)
+		adming.POST("/login",controller.AdminLogin)
+		adming.POST("/logout",controller.AdminLogout)
 	}
 
 	return router

@@ -11,3 +11,4 @@ server.key
 ca.key
 ca.cert
 ca.srl
+auth/src/assets/AdminIcons/
