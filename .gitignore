@@ -12,3 +12,4 @@ ca.key
 ca.cert
 ca.srl
 auth/src/assets/AdminIcons/
+auth/src/sdks/cert/ca.srl

@@ -90,7 +90,14 @@ func InitRouter() *echo.Echo {
 	{
 		adming.POST("/signup",controller.AdminSignup)
 		adming.POST("/login",controller.AdminLogin)
-		adming.POST("/logout",controller.AdminLogout)
+		adming.POST("/logout",controller.AdminLogout, middlewares.AdminAuthMiddleware)
+	}
+
+	// 管理者の操作 api
+	admincg := router.Group("/adminc")
+	{
+		admincg.Use(middlewares.AdminAuthMiddleware)
+		admincg.GET("/info",controller.GetAdminInfo)
 	}
 
 	return router

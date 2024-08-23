@@ -51,8 +51,8 @@ signup_form.addEventListener("submit",async function(evt){
     evt.preventDefault();
 
     // フォームから値取得
-    const username = login_form.elements["username"].value;
-    const password = login_form.elements["password"].value;
+    const username = signup_form.elements["username"].value;
+    const password = signup_form.elements["password"].value;
 
     // ログイン
     const result = await Signup(username,password);
@@ -83,6 +83,32 @@ async function Signup(username,password) {
     if (req.status != 200) {
         // 失敗したとき
         console.log(`failed to admin signup : ${await req.text()}`);
+        return false;
+    }
+
+    // 結果をjson に
+    console.log(await req.json());
+
+    return true;
+}
+
+// ログアウトボタン
+const logout_btn = document.getElementById("logout_btn");
+
+logout_btn.addEventListener("click",async function (evt) {
+    await Logout();
+})
+
+async function Logout() {
+    // リクエスト送信
+    const req = await fetch("/auth/admin/logout",{
+        method: "POST",
+    })
+
+    // エラー処理
+    if (req.status != 200) {
+        // 失敗したとき
+        console.log(`failed to admin logout : ${await req.text()}`);
         return false;
     }
 
