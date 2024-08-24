@@ -98,6 +98,7 @@ func InitRouter() *echo.Echo {
 	{
 		admincg.Use(middlewares.AdminAuthMiddleware)
 		admincg.GET("/info",controller.GetAdminInfo)
+		admincg.GET("/users",controller.GetUsers)
 	}
 
 	return router

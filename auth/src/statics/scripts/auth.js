@@ -1,23 +1,3 @@
-// ログインフォーム
-const login_form = document.getElementById("login_form");
-login_form.addEventListener("submit",async function(evt){
-    evt.preventDefault();
-
-    // フォームから値取得
-    const username = login_form.elements["username"].value;
-    const password = login_form.elements["password"].value;
-
-    // ログイン
-    const result = await Login(username,password);
-
-    // 成功したか
-    if (result) {
-        console.log("ログイン成功");
-    } else {
-        console.log("ログイン失敗");
-    }
-});
-
 // ログイン
 async function Login(username,password) {
     // ログイン
@@ -40,30 +20,10 @@ async function Login(username,password) {
     }
 
     // 結果をjson に
-    console.log(await req.json());
+    console.log(await req.text());
 
     return true;
 }
-
-// サインアップフォーム
-const signup_form = document.getElementById("signup_form");
-signup_form.addEventListener("submit",async function(evt){
-    evt.preventDefault();
-
-    // フォームから値取得
-    const username = signup_form.elements["username"].value;
-    const password = signup_form.elements["password"].value;
-
-    // ログイン
-    const result = await Signup(username,password);
-
-    // 成功したか
-    if (result) {
-        console.log("サインアップ成功");
-    } else {
-        console.log("サインアップ失敗");
-    }
-});
 
 // サインアップ
 async function Signup(username,password) {
@@ -87,17 +47,10 @@ async function Signup(username,password) {
     }
 
     // 結果をjson に
-    console.log(await req.json());
+    console.log(await req.text());
 
     return true;
 }
-
-// ログアウトボタン
-const logout_btn = document.getElementById("logout_btn");
-
-logout_btn.addEventListener("click",async function (evt) {
-    await Logout();
-})
 
 async function Logout() {
     // リクエスト送信
@@ -108,12 +61,31 @@ async function Logout() {
     // エラー処理
     if (req.status != 200) {
         // 失敗したとき
-        console.log(`failed to admin logout : ${await req.text()}`);
+        const result = await req.text();
+        console.log(`failed to admin logout : ${result}`);
         return false;
     }
 
     // 結果をjson に
     console.log(await req.json());
 
+    return true;
+}
+
+async function GetInfo() {
+    // Admin の情報取得
+    const req = await fetch("/auth/adminc/info",{
+        method: "GET"
+    })
+
+    // エラー処理
+    if (req.status != 200) {
+        const result = await req.text();
+        console.log(`failed to get admin info : ${result}`);
+        return false;
+    }
+
+    const result = await req.text();
+    console.log(`admin info : ${result}`);
     return true;
 }

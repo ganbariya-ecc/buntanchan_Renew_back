@@ -225,3 +225,17 @@ func (usr User) ValidatePassword(Password string) (bool) {
 	//ハッシュ化されたパスワードと入力されたパスワードを比較
 	return bcrypt.CompareHashAndPassword([]byte(usr.Password),[]byte(Password)) == nil
 }
+
+func GetAllUser() ([]User,error) {
+	var users []User
+
+	// 全ユーザー取得
+	result := dbconn.Find(&users)
+
+	// エラー処理
+	if result.Error != nil {
+		return []User{},result.Error
+	}
+
+	return users,nil
+}

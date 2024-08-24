@@ -126,6 +126,27 @@ func (usr AdminUser) GetLabels() ([]AdminLabel,error) {
 	return labels,err
 }
 
+//ラベルを取得する関数
+func (usr AdminUser) GetLabel(name string) (AdminLabel,error) {
+	//ラベルを格納する変数
+	var labels []AdminLabel
+
+	// ラベルを取得
+	err := dbconn.Model(usr).Where(&AdminLabel{Name: name}).Association("Labels").Find(&labels)
+
+	// エラー処理
+	if err != nil {
+		return AdminLabel{},err
+	}
+
+	// 見つからないとき
+	if len(labels) == 0 {
+		return AdminLabel{},errors.New("No label assigned")
+	}
+
+	return labels[0],err
+}
+
 // ユーザーを削除する
 func (usr AdminUser) Delete() (error) {
 	// ラベルを削除する
