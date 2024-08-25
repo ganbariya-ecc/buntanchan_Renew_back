@@ -42,3 +42,24 @@ func GetUsers(ctx echo.Context) error {
 		"users" : users,
 	})
 }
+
+func GetUserInfo(ctx echo.Context) error {
+	// adminid 取得
+	adminid := ctx.Get("adminid").(string)
+
+	// ユーザーID取得
+	userid := ctx.Request().Header.Get("userid")
+
+	// 一般ユーザー情報取得
+	user,err := service.GetUserInfo(adminid,userid)
+
+	// エラー処理
+	if err != nil {
+		log.Println(err)
+		return ctx.NoContent(http.StatusInternalServerError)
+	}
+
+	return ctx.JSON(http.StatusOK,echo.Map{
+		"user" : user,
+	})
+}

@@ -6,6 +6,8 @@ import (
 	"github.com/markbates/goth"
 	"github.com/markbates/goth/gothic"
 	"github.com/markbates/goth/providers/discord"
+	"github.com/markbates/goth/providers/line"
+	"github.com/markbates/goth/providers/google"
 
 	"github.com/gorilla/sessions"
 )
@@ -26,5 +28,7 @@ func Init() {
 	// Oauth2 プロバイダー初期化
 	goth.UseProviders(
 		discord.New(os.Getenv("Discord_ClientID"), os.Getenv("Discord_Secret"), os.Getenv("Discord_Callback")),
+		google.New(os.Getenv("Google_KEY"), os.Getenv("Google_SECRET"), os.Getenv("Google_Callback")),
+		line.New(os.Getenv("Line_KEY"), os.Getenv("Line_SECRET"), os.Getenv("Line_Callback"), "profile"),
 	)
 }

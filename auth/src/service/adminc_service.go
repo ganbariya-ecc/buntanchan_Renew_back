@@ -29,3 +29,15 @@ func AdminGetUsers(userid string) ([]model.User, error) {
 	// ユーザー一覧取得
 	return model.GetAllUser()
 }
+
+func GetUserInfo(adminid,userid string) (model.User,error) {
+	// ユーザー情報取得
+	userData,err := model.GetUserByID(userid)
+
+	// エラー処理
+	if err != nil {
+		return model.User{},err
+	}
+
+	return userData,nil
+}
