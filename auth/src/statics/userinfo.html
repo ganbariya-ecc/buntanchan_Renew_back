@@ -11,11 +11,19 @@
 <body>
     <h1>ユーザー情報</h1>
 
-    <button id="back_button">戻る</button>
+    <button id="back_button" class="btn btn-primary m-3">戻る</button>
 
-    <div class="mt-3">
+    <div class="m-3 user_labels">
         <label for="">ユーザーラベル</label>
-        <input type="text" class="form-control" value="" id="test_input" />
+        <div style="display: flex;" class="w-100">
+            <input type="text" class="form-control mx-3 w-75" value="" id="test_input"/>
+            <button type="submit" class="btn btn-primary" id="tags_save_button">保存</button>
+        </div>
+    </div>
+
+    <div class="m-3 mt-5">
+        <p>ユーザー管理</p>
+        <button type="button" id="delete_btn" class="btn btn-danger">削除</button>
     </div>
 
     <script src="./bootstrap-5.3.0-dist/js/bootstrap.min.js"></script>

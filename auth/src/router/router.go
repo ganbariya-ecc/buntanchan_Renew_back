@@ -102,5 +102,19 @@ func InitRouter() *echo.Echo {
 		admincg.GET("/userinfo",controller.GetUserInfo)
 	}
 
+	// ラベル管理 API
+	labelcg := admincg.Group("/labels")
+	{
+		// ラベルを更新する
+		labelcg.POST("/update",controller.UpdateLabels)
+	}
+
+	// ユーザー管理 API
+	usercg := admincg.Group("/user")
+	{
+		usercg.GET("/info",controller.UserInfo)
+		usercg.DELETE("/delete",controller.DeleteUser)
+	}
+
 	return router
 }
