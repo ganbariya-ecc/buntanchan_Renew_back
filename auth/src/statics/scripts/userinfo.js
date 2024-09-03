@@ -70,7 +70,7 @@ delete_btn.addEventListener("click",async function (evt) {
     }
 
     // 成功したとき
-    console.log(await req.json())
+    console.log(await req.text())
 
     // index に戻る
     window.location.href = "/auth/index.html";
