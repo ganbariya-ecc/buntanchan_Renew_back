@@ -11,3 +11,7 @@ async function auth_test() {
 
     console.log(await req.json());
 }
+
+function Discord_Auth() {
+    window.location.href = "/auth/oauth/discord";
+}
