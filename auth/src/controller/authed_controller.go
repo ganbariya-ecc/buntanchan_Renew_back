@@ -34,3 +34,30 @@ func GetJWT(ctx echo.Context) error {
 		"jwt": token,
 	})
 }
+
+func GetInfo(ctx echo.Context) error {
+	// ユーザーID取得
+	userid := ctx.Get("userid")
+
+	// エラー処理
+	if userid == nil {
+		return ctx.JSON(http.StatusInternalServerError, echo.Map{
+			"error" : "failed to get userid",
+		})
+	}
+
+	// ユーザーID取得
+	user,err := service.GetUserInfo(userid.(string))
+
+	// エラー処理
+	if err != nil {
+		return ctx.JSON(http.StatusInternalServerError,echo.Map{
+			"result" : "Failed to obtain user information",
+		})
+	}
+
+	// ユーザー情報返却
+	return ctx.JSON(http.StatusOK,echo.Map{
+		"result" : user,
+	})
+}

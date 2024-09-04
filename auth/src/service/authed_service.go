@@ -68,3 +68,15 @@ func ValidateJwt(tokenString string) (model.User, error) {
 		return model.User{}, err
 	}
 }
+
+func GetUserInfo(userid string) (model.User,error) {
+	// ユーザー情報取得
+	userData,err := model.GetUserByID(userid)
+
+	// エラー処理
+	if err != nil {
+		return model.User{},err
+	}
+
+	return userData,nil
+}
