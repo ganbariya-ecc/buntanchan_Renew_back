@@ -15,24 +15,34 @@ func GetJWT(ctx echo.Context) error {
 	// エラー処理
 	if userid == nil {
 		return ctx.JSON(http.StatusInternalServerError, echo.Map{
-			"error" : "failed to get userid",
+			"error": "failed to get userid",
 		})
 	}
 
 	// JWT生成
-	token,herr := service.GenJWT(userid.(string))
+	token, herr := service.GenJWT(userid.(string))
 
 	// エラー処理
 	if herr != nil {
 		log.Println("JWT Error : " + herr.Error())
-		return ctx.JSON(herr.Status,echo.Map{
-			"error" : herr.Message,
+		return ctx.JSON(herr.Status, echo.Map{
+			"error": herr.Message,
 		})
 	}
 
-	return ctx.JSON(http.StatusOK,echo.Map{
+	return ctx.JSON(http.StatusOK, echo.Map{
 		"jwt": token,
 	})
+}
+
+type ReturnUserInfo struct {
+	UserID     string
+	Name       string
+	OauthType  string
+	Labels     []string
+	ProviderID string
+	Provider   string
+	Email      string
 }
 
 func GetInfo(ctx echo.Context) error {
@@ -42,22 +52,29 @@ func GetInfo(ctx echo.Context) error {
 	// エラー処理
 	if userid == nil {
 		return ctx.JSON(http.StatusInternalServerError, echo.Map{
-			"error" : "failed to get userid",
+			"error": "failed to get userid",
 		})
 	}
 
 	// ユーザーID取得
-	user,err := service.GetUserInfo(userid.(string))
+	user, err := service.GetUserInfo(userid.(string))
 
 	// エラー処理
 	if err != nil {
-		return ctx.JSON(http.StatusInternalServerError,echo.Map{
-			"result" : "Failed to obtain user information",
+		return ctx.JSON(http.StatusInternalServerError, echo.Map{
+			"result": "Failed to obtain user information",
 		})
 	}
 
 	// ユーザー情報返却
-	return ctx.JSON(http.StatusOK,echo.Map{
-		"result" : user,
+	return ctx.JSON(http.StatusOK, echo.Map{
+		"result": ReturnUserInfo{
+			UserID:     user.UserID,
+			Email:      user.Email,
+			Name:       user.UserName,
+			OauthType:  string(user.AuthType),
+			ProviderID: user.ProviderID,
+			Provider:   user.Provider,
+		},
 	})
 }

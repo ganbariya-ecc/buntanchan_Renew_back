@@ -50,7 +50,7 @@ async function Login(userid,password) {
 
 async function GetInfo() {
     const req = await fetch("/auth/authed/info",{
-        method: "POST",
+        method: "GET",
     });
 
     // 成功したか
@@ -59,8 +59,8 @@ async function GetInfo() {
         const res = await req.json();
 
         // Jwt を返す
-        return String(res["jwt"]);
+        return String(res["result"]);
     }
 
-    return ""
+    return null;
 }
