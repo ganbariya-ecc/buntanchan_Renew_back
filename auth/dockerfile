@@ -9,4 +9,4 @@ COPY ./src .
 RUN ["chmod","+x","./setup.sh"]
 RUN ["bash","./setup.sh"]
 
-# CMD ["go","run","."]
+CMD ["go","run","."]
