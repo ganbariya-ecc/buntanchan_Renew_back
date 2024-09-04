@@ -43,7 +43,7 @@ func GetUsers(ctx echo.Context) error {
 	})
 }
 
-func GetUserInfo(ctx echo.Context) error {
+func AdminGetUserInfo(ctx echo.Context) error {
 	// adminid 取得
 	adminid := ctx.Get("adminid").(string)
 
@@ -51,7 +51,7 @@ func GetUserInfo(ctx echo.Context) error {
 	userid := ctx.Request().Header.Get("userid")
 
 	// 一般ユーザー情報取得
-	user,err := service.GetUserInfo(adminid,userid)
+	user,err := service.AdminGetUserInfo(adminid,userid)
 
 	// エラー処理
 	if err != nil {

@@ -30,7 +30,7 @@ func AdminGetUsers(userid string) ([]model.User, error) {
 	return model.GetAllUser()
 }
 
-func GetUserInfo(adminid,userid string) (model.User,error) {
+func AdminGetUserInfo(adminid,userid string) (model.User,error) {
 	// ユーザー情報取得
 	userData,err := model.GetUserByID(userid)
 

@@ -83,6 +83,8 @@ func InitRouter() *echo.Echo {
 		authedg.Use(middlewares.AuthMiddleware)
 
 		authedg.POST("/jwt", controller.GetJWT)
+
+		authedg.GET("/info",controller.GetInfo)
 	}
 
 	// 管理者のグループ
@@ -99,7 +101,7 @@ func InitRouter() *echo.Echo {
 		admincg.Use(middlewares.AdminAuthMiddleware)
 		admincg.GET("/info",controller.GetAdminInfo)
 		admincg.GET("/users",controller.GetUsers)
-		admincg.GET("/userinfo",controller.GetUserInfo)
+		admincg.GET("/userinfo",controller.AdminGetUserInfo)
 	}
 
 	// ラベル管理 API
