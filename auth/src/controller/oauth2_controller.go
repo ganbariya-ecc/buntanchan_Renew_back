@@ -6,6 +6,7 @@ import (
 	"context"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/labstack/echo/v4"
 
@@ -64,5 +65,5 @@ func CallbackOauth(ctx echo.Context) error {
 		return ctx.JSON(http.StatusInternalServerError, nil)
 	}
 
-	return ctx.Redirect(http.StatusFound, "/auth/")
+	return ctx.Redirect(http.StatusFound, os.Getenv("Redirect_URL"))
 }

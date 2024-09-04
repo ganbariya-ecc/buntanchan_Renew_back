@@ -17,6 +17,9 @@ func main() {
 	// テスト
 	// Test()
 
+	// 実行開始ログ
+	log.Println("Server execution starts")
+
 	// サーバー起動
 	ServerMain()
 }

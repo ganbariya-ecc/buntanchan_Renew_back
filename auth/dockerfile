@@ -2,6 +2,11 @@ FROM golang:1.22.3-bookworm
 
 RUN apt update
 
-WORKDIR /root/template
+WORKDIR /root/auth
 
 COPY ./src .
+
+RUN ["chmod","+x","./setup.sh"]
+RUN ["bash","./setup.sh"]
+
+CMD ["go","run","."]

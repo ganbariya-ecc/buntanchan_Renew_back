@@ -15,3 +15,11 @@ async function auth_test() {
 function Discord_Auth() {
     window.location.href = "/auth/oauth/discord";
 }
+
+function Google_Auth() {
+    window.location.href = "/auth/oauth/google";
+}
+
+function Line_Auth() {
+    window.location.href = "/auth/oauth/line";
+}
