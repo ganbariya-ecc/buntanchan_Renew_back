@@ -58,8 +58,8 @@ async function GetInfo() {
         // 成功した場合
         const res = await req.json();
 
-        // Jwt を返す
-        return String(res["result"]);
+        // データ を返す
+        return res["result"];
     }
 
     return null;

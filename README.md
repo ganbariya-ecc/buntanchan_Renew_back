@@ -7,6 +7,7 @@
 4. main.go,sdk,router.go の import を変更する
 5. docker-compose.yaml に追記する (volumes にさっきのworkdirを指定)
 6. nginx の default.conf を編集してリーバスプロキシを通す
+7. 認証SDK を使う場合 auth/src/sdks/protoc を /src/sdk/protoc にコピーする 
 
 ## 機能を追加し終わったら
 dockerfile の最後に cmd を追加してコンテナ起動時に起動するようにすることをお勧めします。

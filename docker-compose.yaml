@@ -6,6 +6,13 @@ services:
         tty: true
         restart: always
     
+    group:
+        build: ./apps/group
+        volumes:
+            - ./apps/group/src:/root/group
+        tty: true
+        restart: always
+    
     test:
         build: ./apps/test
         volumes:
