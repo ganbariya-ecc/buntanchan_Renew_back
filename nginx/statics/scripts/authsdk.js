@@ -17,6 +17,8 @@ async function GetJwt() {
     if (req.status === 200) {
         // 成功した場合
         const res = await req.json();
+    
+        console.log(res["jwt"]);
 
         // Jwt を返す
         return String(res["jwt"]);
@@ -44,4 +46,21 @@ async function Login(userid,password) {
     }
 
     console.log(await req.json());
+}
+
+async function GetInfo() {
+    const req = await fetch("/auth/authed/info",{
+        method: "POST",
+    });
+
+    // 成功したか
+    if (req.status === 200) {
+        // 成功した場合
+        const res = await req.json();
+
+        // Jwt を返す
+        return String(res["jwt"]);
+    }
+
+    return ""
 }

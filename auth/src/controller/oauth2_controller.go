@@ -43,7 +43,7 @@ func CallbackOauth(ctx echo.Context) error {
 	}
 
 	// Oauth完了
-	_, err = service.CallbackOauth(gothUser)
+	userid, err := service.CallbackOauth(gothUser)
 
 	// エラー処理
 	if err != nil {
@@ -51,8 +51,8 @@ func CallbackOauth(ctx echo.Context) error {
 		return ctx.JSON(http.StatusInternalServerError, nil)
 	}
 
-	// セッション保存
-	err = utils.SetAuth(ctx, "userid", gothUser.UserID)
+	// セッション保存 (ユーザーID設定)
+	err = utils.SetAuth(ctx, "userid", userid)
 	if err != nil {
 		log.Println("failed to set token : " + err.Error())
 		return ctx.JSON(http.StatusInternalServerError, nil)
