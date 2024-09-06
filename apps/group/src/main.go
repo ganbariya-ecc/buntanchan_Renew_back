@@ -1,16 +1,16 @@
 package main
 
 import (
+	"group/model"
+	"group/router"
 	"log"
 	"os"
-	"template/model"
-	"template/router"
 
-	"template/sdks/authsdk"
+	"group/sdks/authsdk"
 
 	"github.com/joho/godotenv"
 
-	"template/sdks/sdk_server"
+	// "group/sdks/sdk_server"
 )
 
 func LoadEnv() {
@@ -31,7 +31,7 @@ func main() {
 	model.Init(os.Getenv("DBPATH"))
 
 	// サーバー開始
-	sdk_server.StartServer(os.Getenv("GRPC_ADDR"))
+	// sdk_server.StartServer(os.Getenv("GRPC_ADDR"))
 
 	// ルーター初期化
 	router := router.InitRouter()

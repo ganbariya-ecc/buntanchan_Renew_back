@@ -1,9 +1,9 @@
 package controller
 
 import (
+	"group/sdks/authsdk"
 	"log"
 	"net/http"
-	"template/sdks/authsdk"
 
 	"github.com/labstack/echo/v4"
 )
@@ -28,4 +28,3 @@ func Auth_Test(ctx echo.Context) error {
 		"result": "ok",
 	})
 }
-

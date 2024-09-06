@@ -3,8 +3,8 @@ package sdk_client
 import (
 	"context"
 	"errors"
+	"group/sdks/sdk_client/protoc"
 	"log"
-	"template/sdks/sdk_client/protoc"
 )
 
 func Auth() (protoc.TemplateResult, error) {
@@ -34,5 +34,3 @@ func Auth() (protoc.TemplateResult, error) {
 
 	return protoc.TemplateResult{}, errors.New("Template failure")
 }
-
-

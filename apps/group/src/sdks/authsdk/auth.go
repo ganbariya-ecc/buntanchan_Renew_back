@@ -3,8 +3,8 @@ package authsdk
 import (
 	"context"
 	"errors"
+	"group/sdks/authsdk/protoc"
 	"log"
-	"template/sdks/authsdk/protoc"
 )
 
 func Auth(token string) (protoc.User, error) {
@@ -34,5 +34,3 @@ func Auth(token string) (protoc.User, error) {
 
 	return protoc.User{}, errors.New("User authentication failed")
 }
-
-

@@ -3,11 +3,11 @@ package authsdk
 import (
 	"context"
 	"errors"
+	"group/sdks/authsdk/protoc"
 	"log"
-	"template/sdks/authsdk/protoc"
 )
 
-func CreateUser(UserName,Password string) (string, error) {
+func CreateUser(UserName, Password string) (string, error) {
 	// 初期化済みでない場合 panic
 	if !isInit {
 		log.Fatalln("Not initialized")
@@ -18,7 +18,7 @@ func CreateUser(UserName,Password string) (string, error) {
 
 	// トークンを渡してユーザーを取得する
 	result, err := gaclient.Create(ctx, &protoc.CreateData{
-		SDKKEY: sdkkey,
+		SDKKEY:   sdkkey,
 		UserName: UserName,
 		Password: Password,
 	})

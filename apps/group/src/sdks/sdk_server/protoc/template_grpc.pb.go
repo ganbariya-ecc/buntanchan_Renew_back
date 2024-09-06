@@ -19,7 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	TemplateService_Test_FullMethodName = "/templatesdk.TemplateService/Test"
+	TemplateService_Test_FullMethodName = "/groupSdk.TemplateService/Test"
 )
 
 // TemplateServiceClient is the client API for TemplateService service.
@@ -106,7 +106,7 @@ func _TemplateService_Test_Handler(srv interface{}, ctx context.Context, dec fun
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var TemplateService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "templatesdk.TemplateService",
+	ServiceName: "groupSdk.TemplateService",
 	HandlerType: (*TemplateServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

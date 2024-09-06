@@ -1,5 +1,5 @@
 syntax = "proto3";
-package templatesdk;
+package groupSdk;
 
 option go_package = "../protoc";
 

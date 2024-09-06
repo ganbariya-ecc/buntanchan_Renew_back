@@ -3,7 +3,7 @@ package authsdk
 import (
 	"log"
 
-	"template/sdks/authsdk/protoc"
+	"group/sdks/authsdk/protoc"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
