@@ -1,9 +1,10 @@
-package sdk
+package authsdk
 
 import (
 	"log"
 
-	"test/sdk/protoc"
+	"template/sdks/authsdk/protoc"
+
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 )
@@ -17,10 +18,13 @@ var (
 
 	// 初期化済みか
 	isInit = false
+
+	// SDK を使うためのキー
+	sdkkey = ""
 )
 
-func Init() {
-	addr := "auth:9000"
+func Init(ServerAddr, SDKKEY string) {
+	addr := ServerAddr
 	// TLS認証を追加
 	creds, err := credentials.NewClientTLSFromFile("server.crt", "")
 	if err != nil {
@@ -40,6 +44,7 @@ func Init() {
 	// グローバル変数に格納
 	gaclient = aclient
 	gconn = conn
+	sdkkey = SDKKEY
 
 	isInit = true
 }
@@ -53,4 +58,3 @@ func Disconnect() error {
 	// 接続を切る
 	return gconn.Close()
 }
-

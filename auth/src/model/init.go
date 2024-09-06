@@ -23,6 +23,8 @@ var (
 )
 
 func Init(dbpath string) {
+	log.Println("dbpath : " + dbpath)
+
 	//データベース接続を開く
 	db, err := gorm.Open(sqlite.Open(dbpath), &gorm.Config{})
 
