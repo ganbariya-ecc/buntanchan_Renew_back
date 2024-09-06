@@ -1,13 +1,13 @@
-package sdk
+package authsdk
 
 import (
 	"context"
 	"errors"
 	"log"
-	"group/sdk/protoc"
+	"template/sdks/authsdk/protoc"
 )
 
-func Auth(token string) (protoc.User,error) {
+func CreateUser(UserName,Password string) (string, error) {
 	// 初期化済みでない場合 panic
 	if !isInit {
 		log.Fatalln("Not initialized")
@@ -17,20 +17,22 @@ func Auth(token string) (protoc.User,error) {
 	ctx := context.Background()
 
 	// トークンを渡してユーザーを取得する
-	result, err := gaclient.Auth(ctx, &protoc.AuthData{
-		Token: token,
+	result, err := gaclient.Create(ctx, &protoc.CreateData{
+		SDKKEY: sdkkey,
+		UserName: UserName,
+		Password: Password,
 	})
 
 	// エラー処理
 	if err != nil {
-		return protoc.User{},err
+		return "", err
 	}
 
 	// 成功したか
 	if result.Success {
 		// 成功した場合
-		return *result.User,nil
+		return *&result.Userid, nil
 	}
 
-	return protoc.User{},errors.New("User authentication failed")
+	return "", errors.New("User creation failed")
 }

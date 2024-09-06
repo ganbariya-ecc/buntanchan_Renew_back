@@ -1,9 +1,10 @@
-package sdk
+package sdk_client
 
 import (
 	"log"
 
-	"group/sdk/protoc"
+	"template/sdks/sdk_client/protoc"
+
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 )
@@ -12,15 +13,18 @@ var (
 	// GRPC 接続
 	gconn *grpc.ClientConn = nil
 
-	// 認証用クライアント
-	gaclient protoc.AuthServiceClient = nil
+	// GRPC クライアント
+	gclient protoc.TemplateServiceClient = nil
 
 	// 初期化済みか
 	isInit = false
+
+	// SDK を使うためのキー
+	sdkkey = ""
 )
 
-func Init() {
-	addr := "auth:9000"
+func Init(ServerAddr, SDKKEY string) {
+	addr := ServerAddr
 	// TLS認証を追加
 	creds, err := credentials.NewClientTLSFromFile("server.crt", "")
 	if err != nil {
@@ -35,11 +39,12 @@ func Init() {
 	}
 
 	// クライアント作成
-	aclient := protoc.NewAuthServiceClient(conn)
+	aclient := protoc.NewTemplateServiceClient(conn)
 
 	// グローバル変数に格納
-	gaclient = aclient
+	gclient = aclient
 	gconn = conn
+	sdkkey = SDKKEY
 
 	isInit = true
 }
@@ -53,4 +58,3 @@ func Disconnect() error {
 	// 接続を切る
 	return gconn.Close()
 }
-

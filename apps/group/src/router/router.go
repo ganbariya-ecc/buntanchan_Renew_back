@@ -1,13 +1,13 @@
 package router
 
 import (
-	"group/controller"
+	"template/controller"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
 
-func InitRouter() (*echo.Echo) {
+func InitRouter() *echo.Echo {
 	// Echo instance
 	router := echo.New()
 
@@ -18,8 +18,7 @@ func InitRouter() (*echo.Echo) {
 	// Routes
 	router.GET("/", controller.Hello)
 
-	// グループ作成エンドポイント
-	router.POST("/create",controller.Hello)
+	router.POST("/atest", controller.Auth_Test)
 
 	return router
 }

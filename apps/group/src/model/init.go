@@ -14,6 +14,8 @@ var (
 )
 
 func Init(dbpath string) {
+	log.Println("dbpath : " + dbpath)
+
 	//データベース接続を開く
 	db, err := gorm.Open(sqlite.Open(dbpath), &gorm.Config{})
 
@@ -30,9 +32,6 @@ func Init(dbpath string) {
 
 	// // ユーザーアイコンフォルダを作成する
 	// os.MkdirAll(UserIconDir, 0644)
-
-	// // Adminアイコンフォルダを作成する
-	// os.MkdirAll(AdminIconDir, 0644)
 
 	// // デフォルトアイコンが存在するか
 	// if _, err := os.Stat(DefaultUserIcon); err != nil {
