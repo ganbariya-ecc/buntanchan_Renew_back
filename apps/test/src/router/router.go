@@ -1,13 +1,13 @@
 package router
 
 import (
-	"test/controller"
+	"template/controller"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
 
-func InitRouter() (*echo.Echo) {
+func InitRouter() *echo.Echo {
 	// Echo instance
 	router := echo.New()
 
@@ -18,7 +18,7 @@ func InitRouter() (*echo.Echo) {
 	// Routes
 	router.GET("/", controller.Hello)
 
-	router.POST("/atest",controller.Auth_Test)
+	router.POST("/atest", controller.Auth_Test)
 
 	return router
 }

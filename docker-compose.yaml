@@ -1,11 +1,4 @@
-services:
-    template:
-        build: ./apps/template
-        volumes:
-            - ./apps/template/src:/root/template
-        tty: true
-        restart: always
-    
+services:  
     test:
         build: ./apps/test
         volumes:

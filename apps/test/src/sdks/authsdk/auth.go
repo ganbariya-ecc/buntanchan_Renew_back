@@ -1,13 +1,13 @@
-package sdk
+package authsdk
 
 import (
 	"context"
 	"errors"
 	"log"
-	"test/sdk/protoc"
+	"template/sdks/authsdk/protoc"
 )
 
-func Auth(token string) (protoc.User,error) {
+func Auth(token string) (protoc.User, error) {
 	// 初期化済みでない場合 panic
 	if !isInit {
 		log.Fatalln("Not initialized")
@@ -23,14 +23,16 @@ func Auth(token string) (protoc.User,error) {
 
 	// エラー処理
 	if err != nil {
-		return protoc.User{},err
+		return protoc.User{}, err
 	}
 
 	// 成功したか
 	if result.Success {
 		// 成功した場合
-		return *result.User,nil
+		return *result.User, nil
 	}
 
-	return protoc.User{},errors.New("User authentication failed")
+	return protoc.User{}, errors.New("User authentication failed")
 }
+
+

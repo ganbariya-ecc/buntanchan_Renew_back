@@ -20,6 +20,18 @@ message User {
     int64 CreatedAt = 6;
 }
 
+message CreateData {
+    string SDKKEY = 1;
+    string UserName = 2;
+    string Password = 3;
+}
+
+message CreateResponse {
+    bool success = 1;
+    string userid = 2;
+}
+
 service AuthService {
     rpc Auth(AuthData) returns (UserResult) {}
+    rpc Create(CreateData) returns (CreateResponse) {}
 }
