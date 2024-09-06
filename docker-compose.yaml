@@ -1,8 +1,8 @@
 services:  
-    test:
-        build: ./apps/test
+    template:
+        build: ./apps/template
         volumes:
-            - ./apps/test/src:/root/test
+            - ./apps/template/src:/root/template
         tty: true
         restart: always
 
