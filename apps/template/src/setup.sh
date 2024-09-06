@@ -8,7 +8,7 @@ echo $CURRENT
 # スクリプトのディレクトリに移動
 cd $CURRENT
 
-cd ./sdks/sdk_template/proto
+cd ./sdks/sdk_server/proto
 
 apt update
 apt install -y protobuf-compiler
@@ -22,7 +22,7 @@ protoc --go_out=. --go-grpc_out=require_unimplemented_servers=false:. template.p
 cd $CURRENT
 
 # GRPC の鍵ディレクトリに移動
-cd ./sdks/sdk_template/cert
+cd ./sdks/sdk_server/cert
 
 # generate ca.key 
 openssl genrsa -out ca.key 4096
@@ -37,5 +37,5 @@ openssl x509 -req -in server.csr -CA ca.cert -CAkey ca.key -CAcreateserial -out 
 
 cd $CURRENT
 # ファイルをコピー
-cp ./sdks/sdk_template/cert/server.crt ./server.crt
-cp ./sdks/sdk_template/cert/server.key ./server.key
+cp ./sdks/sdk_server/cert/server.crt ./server.crt
+cp ./sdks/sdk_server/cert/server.key ./server.key

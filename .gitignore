@@ -1,7 +1,6 @@
 __debug_bin*
 /nginx/keys/*
 auth/src/auth.db
-auth/src/.env
 auth/src/assets/UserIcons/
 auth/src/test.db
 databases/
@@ -13,3 +12,4 @@ ca.cert
 ca.srl
 auth/src/assets/AdminIcons/
 auth/src/sdks/cert/ca.srl
+.env

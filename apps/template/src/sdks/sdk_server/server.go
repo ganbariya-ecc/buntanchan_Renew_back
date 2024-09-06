@@ -1,8 +1,9 @@
-package sdk_template
+package sdk_server
 
 import (
 	"context"
-	"template/sdks/sdk_template/protoc"
+	"template/sdks/sdk_server/protoc"
+
 	// "auth/service"
 	"log"
 	"net"
@@ -49,5 +50,5 @@ func (tservice *TemplateService) Test(context.Context, *protoc.TemplateData) (*p
 
 	return &protoc.TemplateResult{
 		Success: true,
-	},nil
+	}, nil
 }
