@@ -1,0 +1,28 @@
+# buntanchan_Renew_back
+
+## 機能を追加する時
+1. apps の template をコピーする
+2. dockerfile の workdir を編集する
+3. コピーしたディレクトリの go.mod のmodule名を編集する
+4. main.go,sdk,router.go の import を変更する
+5. docker-compose.yaml に追記する (volumes にさっきのworkdirを指定)
+6. nginx の default.conf を編集してリーバスプロキシを通す
+7. 認証SDK を使う場合 auth/src/sdks/protoc を /src/sdk/protoc にコピーする 
+
+## 機能を追加し終わったら
+dockerfile の最後に cmd を追加してコンテナ起動時に起動するようにすることをお勧めします。
+
+## 静的ファイル
+静的ファイルは nginx の statics に放り込んでください
+
+## アクセスする際は
+docker compose で公開したnginx のポート番号に https://localhost:8447/statics/ とかでアクセスすればok
+
+## ユーザーアイコン
+- サイズは256 × 256 にする
+- ファイル形式はjpeg にする
+
+## 認証サーバーとのGRPC 設定
+- ./auth/setup.sh を実行する
+- 生成された server.crt を クライアントフォルダにコピーする
+- クライアントを生成する際は 生成された protoc ディレクトリごとコピーする
