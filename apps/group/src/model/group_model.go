@@ -28,7 +28,7 @@ func CreatedGroup(ownerid,name string, members []MemberData) (string, error) {
 	}
 
 	// データーベースに書き込む
-	result := dbconn.Save(create_group)
+	result := dbconn.Save(&create_group)
 
 	// エラー処理
 	if result.Error != nil {
@@ -37,4 +37,16 @@ func CreatedGroup(ownerid,name string, members []MemberData) (string, error) {
 
 	// 成功したとき
 	return groupid,nil
+}
+
+// オーナーIDからグループを取得する
+func GetGroupByOwnerID(ownerid string) (Group,error) {
+	var returnData Group
+
+	// グループを取得
+	result := dbconn.Where(Group{
+		OwnerID: ownerid,
+	}).First(&returnData)
+
+	return returnData,result.Error
 }

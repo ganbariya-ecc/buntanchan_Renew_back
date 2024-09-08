@@ -5,6 +5,8 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+
+	"group/middlewares"
 )
 
 func InitRouter() *echo.Echo {
@@ -19,6 +21,9 @@ func InitRouter() *echo.Echo {
 	router.GET("/", controller.Hello)
 
 	router.POST("/atest", controller.Auth_Test)
+
+	// グループ作成エンドポイント
+	router.POST("/create",controller.CreateGroup,middlewares.AuthMiddleware)
 
 	return router
 }

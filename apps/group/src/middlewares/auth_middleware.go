@@ -1,4 +1,4 @@
-package middleware
+package middlewares
 
 import (
 	"group/sdks/authsdk"
@@ -8,10 +8,12 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func AdminAuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
+func AuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(ctx echo.Context) error {
 		// Header 取得
 		btoken := ctx.Request().Header.Get("Authorization")
+
+		log.Println("token : ",btoken)
 
 		// トークンがない場合
 		if btoken == "" {
@@ -26,12 +28,14 @@ func AdminAuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 		// エラー処理
 		if err != nil {
 			log.Println("Authentication failed : " + err.Error())
-			return err
+			return ctx.JSON(http.StatusUnauthorized,echo.Map{
+				"result" : "failed to auth",
+			})
 		}
 
-		// ユーザーID
-		ctx.Set("user",user)
+		// ユーザーデータ
+		ctx.Set("user",&user)
 
-		return nil
+		return next(ctx)
 	}
 }
