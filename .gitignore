@@ -14,3 +14,4 @@ auth/src/assets/AdminIcons/
 auth/src/sdks/cert/ca.srl
 .env
 apps/group/src/.env
+apps/group/src/group.db

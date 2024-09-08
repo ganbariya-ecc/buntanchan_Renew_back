@@ -26,7 +26,7 @@ var (
 func Init(ServerAddr, SDKKEY string) {
 	addr := ServerAddr
 	// TLS認証を追加
-	creds, err := credentials.NewClientTLSFromFile("server.crt", "")
+	creds, err := credentials.NewClientTLSFromFile("./sdks/authsdk/server.crt", "")
 	if err != nil {
 		log.Fatal(err)
 	}
