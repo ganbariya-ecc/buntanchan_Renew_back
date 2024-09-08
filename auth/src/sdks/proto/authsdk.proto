@@ -31,7 +31,28 @@ message CreateResponse {
     string userid = 2;
 }
 
+message GetUserAllRequest {
+    string SDKKEY = 1;
+    string UserID = 2;
+}
+
+message GetUserAllResponse {
+    bool success = 1;
+    UserAllData user = 2;
+}
+
+message UserAllData {
+    string UserID = 1;
+    string UserName = 2;
+    string AuthType = 3;
+    string Email = 5;
+    int64 CreatedAt = 6;
+    string Password = 7;
+    bool isHashed = 8;   
+}
+
 service AuthService {
     rpc Auth(AuthData) returns (UserResult) {}
     rpc Create(CreateData) returns (CreateResponse) {}
+    rpc GetUserAll(GetUserAllRequest) returns (GetUserAllResponse) {}
 }

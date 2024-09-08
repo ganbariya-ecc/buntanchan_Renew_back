@@ -32,11 +32,13 @@ type User struct {
 	ProviderID string //プロバイダーID
 
 	// 認証関連
-	Password string //パスワードハッシュ
+	Password string //パスワード
 
 	//その他
 	CreatedAt time.Time //作成日時
 	UpdatedAt time.Time //更新日時
+
+	HashPassword bool // パスワードをハッシュ化するか
 }
 
 type UserLabel struct {
@@ -118,16 +120,25 @@ func CreateOauthUser(UserName string,ProviderUserid string, Labels []UserLabel, 
 }
 
 // パスワード認証ユーザーを作成
-func CreateUser(UserName string, Labels []UserLabel, Password string) (string, error) {
+func CreateUser(UserName string, Labels []UserLabel, Password string,DoHash bool) (string, error) {
 	//ユーザーID生成
 	UserID := utils.GenID()
 
-	//パスワードをハッシュ化
-	hashed, err := utils.HashPassword(Password)
+	// パスワード
+	passwd := Password
 
-	//エラー処理
-	if err != nil {
-		return "", err
+	// パスワードをハッシュ化するか
+	if DoHash {
+	//パスワードをハッシュ化
+		hashed, err := utils.HashPassword(Password)	
+
+		//エラー処理
+		if err != nil {
+			return "", err
+		}
+
+		// パスワードを設定
+		passwd = hashed
 	}
 
 	//ユーザーデータ作成
@@ -139,7 +150,8 @@ func CreateUser(UserName string, Labels []UserLabel, Password string) (string, e
 		Email:    "",
 		ProviderID: "",
 		Provider: "",
-		Password: hashed,
+		Password: passwd,
+		HashPassword: DoHash,
 	}
 
 	//データベースに保存
@@ -152,7 +164,7 @@ func CreateUser(UserName string, Labels []UserLabel, Password string) (string, e
 	}
 
 	// アイコンをコピーする
-	err = utils.CopyFile(DefaultUserIcon,path.Join(UserIconDir,UserID + ".jpeg"))
+	err := utils.CopyFile(DefaultUserIcon,path.Join(UserIconDir,UserID + ".jpeg"))
 
 	return UserID, err
 }
