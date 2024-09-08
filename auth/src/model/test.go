@@ -31,7 +31,7 @@ func Test() {
 	uid2, err := CreateUser("wao", []UserLabel{
 		CreateLabel("hellob"),
 		CreateLabel("worldb"),
-	}, "password")
+	}, "password",true)
 
 	if err != nil {
 		log.Println(err)
@@ -43,7 +43,7 @@ func Test() {
 	uid3, err := CreateUser("wao3", []UserLabel{
 		CreateLabel("hellob3"),
 		CreateLabel("worldb3"),
-	}, "password3")
+	}, "password3",true)
 
 	if err != nil {
 		log.Println(err)

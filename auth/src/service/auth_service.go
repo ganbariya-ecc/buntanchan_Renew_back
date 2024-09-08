@@ -30,7 +30,7 @@ func BasicLogin(userid string, password string) (model.User,error) {
 
 func BasicSignup(userName string, password string) (model.User,error) {
 	//ユーザーデータ作成
-	userid,err := model.CreateUser(userName,[]model.UserLabel{},password)
+	userid,err := model.CreateUser(userName,[]model.UserLabel{},password,true)
 
 	//エラー処理
 	if err != nil {

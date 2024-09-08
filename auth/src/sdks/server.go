@@ -1,6 +1,7 @@
 package sdks
 
 import (
+	"auth/model"
 	"auth/sdks/protoc"
 	"auth/service"
 	"context"
@@ -46,48 +47,94 @@ func StartServer(bindAddr string) error {
 
 type AuthService struct{}
 
+// GetUserAll implements protoc.AuthServiceServer.
+func (aservice *AuthService) GetUserAll(ctx context.Context,data *protoc.GetUserAllRequest) (*protoc.GetUserAllResponse, error) {
+	// SDKKEY 認証
+	if data.SDKKEY != os.Getenv("SDK_KEY") {
+		return &protoc.GetUserAllResponse{
+			Success: false,
+			User: &protoc.UserAllData{},
+		}, errors.New("SDKKEY does not match")
+	}
+
+	// ユーザーIDがないとき
+	if data.UserID == "" {
+		return &protoc.GetUserAllResponse{
+			Success: false,
+			User: &protoc.UserAllData{},
+		}, errors.New("UserID not specified")
+	}
+
+	// ユーザーを取得
+	user,err := model.GetUserByID(data.UserID)
+
+	// エラー処理
+	if err != nil {
+		// ユーザーの取得に失敗した場合
+		log.Println("Failed to get user from SDK : " + err.Error())
+		
+		return &protoc.GetUserAllResponse{
+			Success: false,
+			User: &protoc.UserAllData{},
+		}, errors.New("Failed to get user")
+	}
+
+	return &protoc.GetUserAllResponse{
+		Success: true,
+		User: &protoc.UserAllData{
+			UserID: user.UserID,
+			UserName: user.UserName,
+			AuthType: string(user.AuthType),
+			Email: user.Email,
+			CreatedAt: user.CreatedAt.Unix(),
+			Password: user.Password,
+			IsHashed: user.HashPassword,
+		},
+	}, nil
+}
+
 // Create implements protoc.AuthServiceServer.
 func (aservice *AuthService) Create(ctx context.Context, data *protoc.CreateData) (*protoc.CreateResponse, error) {
 	// SDKKEY 認証
 	if data.SDKKEY != os.Getenv("SDK_KEY") {
 		return &protoc.CreateResponse{
 			Success: false,
-			Userid: "",
-		},errors.New("Username not specified")
+			Userid:  "",
+		}, errors.New("SDKKEY does not match")
 	}
 
 	// バリデーション
 	if data.UserName == "" {
 		return &protoc.CreateResponse{
 			Success: false,
-			Userid: "",
-		},errors.New("Username not specified")
+			Userid:  "",
+		}, errors.New("Username not specified")
 	}
 
 	// パスワード検証
 	if data.Password == "" {
 		return &protoc.CreateResponse{
 			Success: false,
-			Userid: "",
-		},errors.New("Password not specified")
+			Userid:  "",
+		}, errors.New("Password not specified")
 	}
 
 	// ユーザーを作成する
-	user_data,err := service.BasicSignup(data.UserName,data.Password)
+	userid, err := model.CreateUser(data.UserName, []model.UserLabel{}, data.Password, false)
 
 	// エラー処理
 	if err != nil {
 		log.Println("Failed to create user from SDK : " + err.Error())
 		return &protoc.CreateResponse{
 			Success: false,
-			Userid: "",
-		},err
+			Userid:  "",
+		}, err
 	}
 
 	return &protoc.CreateResponse{
 		Success: true,
-		Userid: user_data.UserID,
-	},nil
+		Userid:  userid,
+	}, nil
 }
 
 func (aservice *AuthService) Auth(
