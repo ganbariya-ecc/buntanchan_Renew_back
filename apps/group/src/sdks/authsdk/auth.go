@@ -8,7 +8,7 @@ import (
 )
 
 func Auth(token string) (protoc.User, error) {
-	// 初期化済みでない場合 panic
+	// 初期化済みでない場合 panicc
 	if !isInit {
 		log.Fatalln("Not initialized")
 	}
