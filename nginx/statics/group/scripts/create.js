@@ -38,4 +38,26 @@ async function CreateGrpup(name,members) {
     console.log(await req.json());
 }
 
-CreateGrpup("test",members);
+const CreateGroupBtn = document.getElementById("CreateGroupBtn");
+CreateGroupBtn.addEventListener("click",async function (evt) {
+    await CreateGrpup("test",members);
+})
+
+// CreateGrpup("test",members);
+
+// 現在のグループ取得
+async function GetCurrentG() {
+    const atoken = await GetJwt();
+
+    const req = await fetch("/group/current",{
+        method: "GET",
+        headers : {
+            "Authorization" : atoken,
+            "Content-Type" : "application/json",
+        },
+    })
+
+    console.log(await req.json());
+}
+
+GetCurrentG();

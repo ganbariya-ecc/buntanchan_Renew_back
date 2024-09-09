@@ -49,3 +49,15 @@ func CreateGroup(ctx echo.Context) error {
 		"result" : "success",
 	})
 }
+
+// 所属グループ取得
+func GetCurrentGroup(ctx echo.Context) error {
+	// ユーザー取得
+	user := ctx.Get("user").(*protoc.User)
+
+	log.Println(user)
+
+	return ctx.JSON(http.StatusOK,echo.Map{
+		"result" : "hello world",
+	})
+}

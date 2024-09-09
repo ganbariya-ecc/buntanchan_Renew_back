@@ -25,5 +25,8 @@ func InitRouter() *echo.Echo {
 	// グループ作成エンドポイント
 	router.POST("/create",controller.CreateGroup,middlewares.AuthMiddleware)
 
+	// グループ取得エンドポイント
+	router.GET("/current",controller.GetCurrentGroup,middlewares.AuthMiddleware)
+
 	return router
 }
