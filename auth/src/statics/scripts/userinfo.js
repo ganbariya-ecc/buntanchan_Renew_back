@@ -76,6 +76,29 @@ delete_btn.addEventListener("click",async function (evt) {
     window.location.href = "/auth/index.html";
 })
 
+const loginAsBtn = document.getElementById("loginAsBtn");
+loginAsBtn.addEventListener("click",async function () {
+    await LoginAS(userid);
+})
+
+async function LoginAS(userid) {
+    const req = await fetch("/auth/adminc/user/loginas",{
+        method: "POST",
+        headers : {
+            "userid" : userid
+        }
+    })
+
+    // 失敗したとき
+    if (req.status != 200) {
+        console.log(await req.text());
+        alert("ログイン失敗");
+        return;
+    }
+
+    console.log(await req.text());
+}
+
 async function main() {
     const test_input = document.getElementById('test_input');
 

@@ -116,6 +116,7 @@ func InitRouter() *echo.Echo {
 	{
 		usercg.GET("/info",controller.UserInfo)
 		usercg.DELETE("/delete",controller.DeleteUser)
+		usercg.POST("/loginas",controller.LoginAS)
 	}
 
 	return router
