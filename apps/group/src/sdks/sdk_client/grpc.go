@@ -14,19 +14,16 @@ var (
 	gconn *grpc.ClientConn = nil
 
 	// GRPC クライアント
-	gclient protoc.TemplateServiceClient = nil
+	gclient protoc.GroupSdkServiceClient = nil
 
 	// 初期化済みか
 	isInit = false
-
-	// SDK を使うためのキー
-	sdkkey = ""
 )
 
-func Init(ServerAddr, SDKKEY string) {
+func Init(ServerAddr string) {
 	addr := ServerAddr
 	// TLS認証を追加
-	creds, err := credentials.NewClientTLSFromFile("server.crt", "")
+	creds, err := credentials.NewClientTLSFromFile("../../sdks/sdk_server/server.crt", "")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -39,12 +36,11 @@ func Init(ServerAddr, SDKKEY string) {
 	}
 
 	// クライアント作成
-	aclient := protoc.NewTemplateServiceClient(conn)
+	aclient := protoc.NewGroupSdkServiceClient(conn)
 
 	// グローバル変数に格納
 	gclient = aclient
 	gconn = conn
-	sdkkey = SDKKEY
 
 	isInit = true
 }

@@ -1,6 +1,7 @@
 {
     "recommendations": [
         "yy0931.vscode-sqlite3-editor",
-        "golang.go"
+        "golang.go",
+        "christian-kohler.path-intellisense"
     ]
 }

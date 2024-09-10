@@ -1,0 +1,24 @@
+syntax = "proto3";
+package groupSdk;
+
+option go_package = "../protoc";
+
+message GetMemberRequest {
+    string memberid = 1;
+}
+
+message GetMemberResponse {
+    bool Success = 1;
+    MemberData data = 2;
+}
+
+message MemberData {
+    string memberid = 1;
+    string memberName = 2;
+    string GroupID = 3;
+    string MemberRole = 5;
+}
+
+service GroupSdkService {
+    rpc GetMember(GetMemberRequest) returns (GetMemberResponse) {}
+}

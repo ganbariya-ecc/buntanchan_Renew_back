@@ -16,7 +16,7 @@ apt install -y protobuf-compiler
 go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
 
-protoc --go_out=. --go-grpc_out=require_unimplemented_servers=false:. template.proto
+protoc --go_out=. --go-grpc_out=require_unimplemented_servers=false:. groupSdk.proto
 
 # スクリプトのディレクトリに移動
 cd $CURRENT
@@ -37,5 +37,6 @@ openssl x509 -req -in server.csr -CA ca.cert -CAkey ca.key -CAcreateserial -out 
 
 cd $CURRENT
 # ファイルをコピー
-cp ./sdks/sdk_server/cert/server.crt ./server.crt
-cp ./sdks/sdk_server/cert/server.key ./server.key
+cp ./sdks/sdk_server/cert/server.crt ./sdks/sdk_server/server.crt
+cp ./sdks/sdk_server/cert/server.crt ./sdks/sdk_client/server.crt
+cp ./sdks/sdk_server/cert/server.key ./sdks/sdk_server/server.key

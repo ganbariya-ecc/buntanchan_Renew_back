@@ -9,15 +9,18 @@ COPY ./src .
 RUN ["chmod","+x","./setup.sh"]
 RUN ["bash","./setup.sh"]
 
-# # go のパッケージをダウンロードする
-# RUN go mod download
+# go のパッケージをダウンロードする
+RUN go mod download
 
-# # ARG CGO_ENABLED=0
-# # 64bit linux用にビルドする
-# ARG GOOS=linux
-# ARG GOARCH=amd64
-# # ビルド成果物にデバック情報が含まれないようにする
+# ARG CGO_ENABLED=0
+# 64bit linux用にビルドする
+ARG GOOS=linux
+ARG GOARCH=amd64
+# ビルド成果物にデバック情報が含まれないようにする
 # RUN go build -x -ldflags '-s -w' -o ./server
+
+# 実行するコマンド
+CMD ["go","run","-x","."]
 
 # FROM debian:stable-slim as runner
 

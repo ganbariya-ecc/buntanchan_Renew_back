@@ -2,6 +2,7 @@ package sdk_server
 
 import (
 	"context"
+	"group/model"
 	"group/sdks/sdk_server/protoc"
 
 	// "auth/service"
@@ -23,7 +24,7 @@ func StartServer(bindAddr string) error {
 	}
 
 	// 鍵読み込み
-	cred, err := credentials.NewServerTLSFromFile("./server.crt", "./server.key")
+	cred, err := credentials.NewServerTLSFromFile("./sdks/sdk_server/server.crt", "./sdks/sdk_server/server.key")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -32,7 +33,7 @@ func StartServer(bindAddr string) error {
 	grpcServer := grpc.NewServer(grpc.Creds(cred))
 
 	// 構造体を登録する
-	protoc.RegisterTemplateServiceServer(grpcServer, &TemplateService{})
+	protoc.RegisterGroupSdkServiceServer(grpcServer, &GroupSdkService{})
 
 	// 以下でリッスンし続ける
 	if err := grpcServer.Serve(listen); err != nil {
@@ -42,13 +43,28 @@ func StartServer(bindAddr string) error {
 	return nil
 }
 
-type TemplateService struct{}
+type GroupSdkService struct{}
 
-// Test implements protoc.TemplateServiceServer.
-func (tservice *TemplateService) Test(context.Context, *protoc.TemplateData) (*protoc.TemplateResult, error) {
-	log.Println("test")
+// GetMember implements protoc.GroupSdkServiceServer.
+func (groupS *GroupSdkService) GetMember(ctx context.Context, req *protoc.GetMemberRequest) (*protoc.GetMemberResponse, error) {
+	// メンバーを取得
+	member,err := model.GetMember(req.Memberid)
 
-	return &protoc.TemplateResult{
+	// エラー処理
+	if err != nil {
+		log.Println("failed to get member from sdk : " + err.Error())
+		return &protoc.GetMemberResponse{
+			Success: false,
+		},err
+	}
+
+	return &protoc.GetMemberResponse{
 		Success: true,
-	}, nil
+		Data: &protoc.MemberData{
+			Memberid: member.MemberID,
+			MemberName: member.Name,
+			GroupID: member.GroupID,
+			MemberRole: string(member.MemberRole),
+		},
+	},nil
 }

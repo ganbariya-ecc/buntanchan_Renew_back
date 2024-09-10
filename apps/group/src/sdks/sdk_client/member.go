@@ -7,7 +7,7 @@ import (
 	"log"
 )
 
-func Auth() (protoc.TemplateResult, error) {
+func GetMember(memberid string) (protoc.MemberData, error) {
 	// 初期化済みでない場合 panic
 	if !isInit {
 		log.Fatalln("Not initialized")
@@ -16,21 +16,21 @@ func Auth() (protoc.TemplateResult, error) {
 	// コンテキスト生成
 	ctx := context.Background()
 
-	// テストを実行する
-	result, err := gclient.Test(ctx, &protoc.TemplateData{
-		Msg: "hello world",
+	// メンバーを取得する
+	result, err := gclient.GetMember(ctx, &protoc.GetMemberRequest{
+		Memberid: memberid,
 	})
 
 	// エラー処理
 	if err != nil {
-		return protoc.TemplateResult{}, err
+		return protoc.MemberData{}, err
 	}
 
 	// 成功したか
 	if result.Success {
 		// 成功した場合
-		return *result, nil
+		return *result.Data, nil
 	}
 
-	return protoc.TemplateResult{}, errors.New("Template failure")
+	return protoc.MemberData{}, errors.New("failed to get member")
 }
