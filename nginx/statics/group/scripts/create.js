@@ -1,8 +1,22 @@
-const GetUserBtn = document.getElementById("GetUserBtn");
+function Init() {
+    try {
+        const GetUserBtn = document.getElementById("GetUserBtn");
 
-GetUserBtn.addEventListener("click",async function (evt) {
-    console.log(await GetInfo());
-})
+        GetUserBtn.addEventListener("click",async function (evt) {
+            console.log(await GetInfo());
+        })
+
+        const CreateGroupBtn = document.getElementById("CreateGroupBtn");
+        CreateGroupBtn.addEventListener("click",async function (evt) {
+            await CreateGrpup("test",members);
+
+            // ページをリロード
+            window.location.reload();
+        })
+    } catch (ex) {
+        console.error(ex);
+    }
+}
 
 const members = [
     {
@@ -38,12 +52,35 @@ async function CreateGrpup(name,members) {
     console.log(await req.json());
 }
 
-const CreateGroupBtn = document.getElementById("CreateGroupBtn");
-CreateGroupBtn.addEventListener("click",async function (evt) {
-    await CreateGrpup("test",members);
-})
-
 // CreateGrpup("test",members);
 
-GetCurrentG();
-GetCurrentMembers();
+async function main() {
+    try {
+        // 現在のグループを取得
+        const currentg = await GetCurrentG();
+
+        // グループが存在するとき
+        const groupName = currentg["result"]["Group"]["Name"];
+
+        // ロール取得
+        const Role = currentg["result"]["Mydata"]["MemberRole"];
+
+        if (groupName != undefined) {
+            if (Role == "Owner" || Role == "Admin") {
+                window.location.href = Admin_Home;
+            } else {
+                window.location.href = Member_Home;
+            }
+        }
+    } catch (ex) {
+        console.log("エラーです")
+        console.error(ex);
+    }
+
+    // Body 表示
+    document.body.style.display = "";
+}
+
+main();
+
+window.addEventListener("DOMContentLoaded",Init)

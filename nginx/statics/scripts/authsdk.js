@@ -64,3 +64,16 @@ async function GetInfo() {
 
     return null;
 }
+
+async function RequireAuth() {
+    try {
+        const myInfo = await GetInfo();
+
+        // ユーザーIDがないとき (ログインしていないとき)
+        if (myInfo["UserID"] == "") {
+            window.location.href = Login_Page;
+        }
+    } catch {
+        window.location.href = Login_Page;
+    }
+}

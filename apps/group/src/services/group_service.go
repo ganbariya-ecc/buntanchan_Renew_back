@@ -84,24 +84,40 @@ func role_to_str(isAdmin bool) model.Role {
 	return model.Member
 }
 
-func GetCurrentGroup(userid string) (model.Group, error) {
+type CurrentGroupData struct {
+	Group  model.Group
+	Mydata model.MemberData
+}
+
+func GetCurrentGroup(userid string) (CurrentGroupData, error) {
 	// ユーザーを取得
 	getUser, err := model.GetMember(userid)
 
 	// エラー処理
 	if err != nil {
-		return model.Group{}, err
+		return CurrentGroupData{}, err
 	}
 
 	// グループを取得
-	grouo, err := model.GetGroup(getUser.GroupID)
+	group, err := model.GetGroup(getUser.GroupID)
 
 	// エラー処理
 	if err != nil {
-		return model.Group{}, err
+		return CurrentGroupData{}, err
 	}
 
-	return grouo, nil
+	// 自身を取得
+	myData,err := model.GetMember(userid)
+
+	// エラー処理
+	if err != nil {
+		return CurrentGroupData{},err
+	}
+
+	return CurrentGroupData{
+		Group: group,
+		Mydata: myData,
+	}, nil
 }
 
 type MembersData struct {
@@ -130,7 +146,7 @@ func GetCurrentMembers(userid string) ([]MembersData, error) {
 	}
 
 	// メンバー一覧を取得
-	members, err := group.GetMembers()
+	members, err := group.Group.GetMembers()
 
 	// エラー処理
 	if err != nil {

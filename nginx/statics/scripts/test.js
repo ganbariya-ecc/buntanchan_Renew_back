@@ -23,3 +23,14 @@ function Google_Auth() {
 function Line_Auth() {
     window.location.href = "/auth/oauth/line";
 }
+
+async function Init() {
+    const myInfo = await GetInfo();
+
+    // ユーザーIDがあるとき (ログインしているとき)
+    if (myInfo["UserID"] != "") {
+        window.location.href = Authed_Page;
+    }
+}
+
+Init();

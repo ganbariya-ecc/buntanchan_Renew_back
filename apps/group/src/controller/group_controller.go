@@ -67,7 +67,7 @@ func GetCurrentGroup(ctx echo.Context) error {
 	}
 
 	// メンバー情報をnil にする
-	group.Members = nil
+	group.Group.Members = nil
 
 	return ctx.JSON(http.StatusOK,echo.Map{
 		"result" : group,

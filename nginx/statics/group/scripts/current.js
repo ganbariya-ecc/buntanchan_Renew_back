@@ -10,7 +10,9 @@ async function GetCurrentG() {
         },
     })
 
-    console.log(await req.json());
+    const result =  await req.json();
+
+    return result;
 }
 
 // 現在のメンバー取得
@@ -25,5 +27,34 @@ async function GetCurrentMembers() {
         },
     })
 
-    console.log(await req.json());
+    const result = await req.json();
+
+    return result;
+}
+
+async function IsOwner() {
+    // 現在のグループを取得
+    const currentg = await GetCurrentG();
+    // ロール取得
+    const Role = currentg["result"]["Mydata"]["MemberRole"];
+
+    return Role == "Owner";
+}
+
+async function IsAdmin() {
+    // 現在のグループを取得
+    const currentg = await GetCurrentG();
+    // ロール取得
+    const Role = currentg["result"]["Mydata"]["MemberRole"];
+
+    return Role == "Admin";
+}
+
+async function IsMember() {
+    // 現在のグループを取得
+    const currentg = await GetCurrentG();
+    // ロール取得
+    const Role = currentg["result"]["Mydata"]["MemberRole"];
+
+    return Role == "Member";
 }
