@@ -30,7 +30,7 @@ services:
             # NGINXのコンフィグファイルをホストOSから、ゲストOSに連結する
             - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
             - ./nginx/keys:/etc/nginx/keys
-            - ./nginx/statics/public:/etc/nginx/static/statics
+            - ./nginx/statics/buntanchan_Renew_web/public:/etc/nginx/static/statics
         tty: true
 
     redis:
