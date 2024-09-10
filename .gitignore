@@ -15,3 +15,4 @@ auth/src/sdks/cert/ca.srl
 .env
 apps/group/src/.env
 apps/group/src/group.db
+nginx/statics/buntanchan_Renew_web

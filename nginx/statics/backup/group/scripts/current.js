@@ -29,7 +29,7 @@ async function GetCurrentMembers() {
 
     const result = await req.json();
 
-    return result;
+    return result["result"];
 }
 
 async function IsOwner() {
