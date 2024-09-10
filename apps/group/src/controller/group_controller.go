@@ -55,9 +55,42 @@ func GetCurrentGroup(ctx echo.Context) error {
 	// ユーザー取得
 	user := ctx.Get("user").(*protoc.User)
 
-	log.Println(user)
+	// 所属しているグループを取得
+	group,err := services.GetCurrentGroup(user.UserID)
+
+	// エラー処理
+	if err != nil {
+		log.Println("get current group Error : " + err.Error())
+		return ctx.JSON(http.StatusInternalServerError,echo.Map{
+			"result" : "get current group failed",
+		})
+	}
+
+	// メンバー情報をnil にする
+	group.Members = nil
 
 	return ctx.JSON(http.StatusOK,echo.Map{
-		"result" : "hello world",
+		"result" : group,
+	})
+}
+
+func GetCurrentMembers(ctx echo.Context) error {
+	// ユーザー取得
+	user := ctx.Get("user").(*protoc.User)
+
+	// メンバー一覧取得
+	result,err := services.GetCurrentMembers(user.UserID)
+
+	// エラー処理
+	if err != nil {
+		log.Println("Get Current Members failed : " + err.Error())
+
+		return ctx.JSON(http.StatusInternalServerError,echo.Map{
+			"result" : "Get Current Members failed",
+		})
+	}
+
+	return ctx.JSON(http.StatusOK,echo.Map{
+		"result" : result,
 	})
 }

@@ -23,10 +23,18 @@ func InitRouter() *echo.Echo {
 	router.POST("/atest", controller.Auth_Test)
 
 	// グループ作成エンドポイント
-	router.POST("/create",controller.CreateGroup,middlewares.AuthMiddleware)
+	router.POST("/create", controller.CreateGroup, middlewares.AuthMiddleware)
 
-	// グループ取得エンドポイント
-	router.GET("/current",controller.GetCurrentGroup,middlewares.AuthMiddleware)
+	currentg := router.Group("/current")
+	{
+		currentg.Use(middlewares.AuthMiddleware)
+
+		// グループ取得エンドポイント
+		currentg.GET("", controller.GetCurrentGroup)
+
+		// メンバー取得エンドポイント
+		currentg.GET("/members", controller.GetCurrentMembers)
+	}
 
 	return router
 }

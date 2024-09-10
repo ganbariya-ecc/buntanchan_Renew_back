@@ -50,3 +50,20 @@ func GetGroupByOwnerID(ownerid string) (Group,error) {
 
 	return returnData,result.Error
 }
+
+// グループIDでグループを取得
+func GetGroup(groupid string) (Group,error) {
+	var getData Group
+
+	// 1件取得
+	result := dbconn.Where(Group{
+		GroupID: groupid,
+	}).First(&getData)
+
+	// エラー処理
+	if result.Error != nil {
+		return Group{},result.Error
+	}
+	
+	return getData,nil
+}
