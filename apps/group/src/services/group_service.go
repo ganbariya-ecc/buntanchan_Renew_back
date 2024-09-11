@@ -159,9 +159,9 @@ func GetCurrentMembers(userid string) ([]MembersData, error) {
 	// メンバーを回す
 	for _, val := range members {
 		// 自身のID と一致する場合は飛ばす
-		if val.MemberID == userid {
-			continue
-		}
+		// if val.MemberID == userid {
+		// 	continue
+		// }
 
 		switch get_member.MemberRole {
 		case model.Owner:
