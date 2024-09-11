@@ -2,6 +2,7 @@ package model
 
 import (
 	"log"
+	"os"
 	// "os"
 
 	"gorm.io/driver/sqlite"
@@ -11,6 +12,9 @@ import (
 var (
 	//データベース接続
 	dbconn *gorm.DB = nil
+
+	// 画像フォルダのパス
+	TaskImageDir = "./assets/TaskImages"
 )
 
 func Init(dbpath string) {
@@ -30,8 +34,8 @@ func Init(dbpath string) {
 	//グローバル変数に格納
 	dbconn = db
 
-	// // ユーザーアイコンフォルダを作成する
-	// os.MkdirAll(UserIconDir, 0644)
+	// タスク画像フォルダを作成する
+	os.MkdirAll(TaskImageDir, 0644)
 
 	// // デフォルトアイコンが存在するか
 	// if _, err := os.Stat(DefaultUserIcon); err != nil {

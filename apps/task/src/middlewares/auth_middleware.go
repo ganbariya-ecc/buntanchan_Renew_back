@@ -49,7 +49,7 @@ func AuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 		}
 
 		// メンバーデータ
-		ctx.Set("member",&memberData)
+		ctx.Set("member",memberData)
 
 		return next(ctx)
 	}
