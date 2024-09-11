@@ -3,7 +3,7 @@ package controller
 import (
 	"log"
 	"net/http"
-	"template/sdks/authsdk"
+	"task/sdks/authsdk"
 
 	"github.com/labstack/echo/v4"
 )
@@ -29,3 +29,11 @@ func Auth_Test(ctx echo.Context) error {
 	})
 }
 
+func GroupTest(ctx echo.Context) error {
+	log.Println(ctx.Get("user"))
+	log.Println(ctx.Get("member"))
+
+	return ctx.JSON(http.StatusOK, echo.Map{
+		"result": "ok",
+	})
+}

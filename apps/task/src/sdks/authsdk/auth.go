@@ -3,7 +3,7 @@ package authsdk
 import (
 	"context"
 	"errors"
-	"group/sdks/authsdk/protoc"
+	"task/sdks/authsdk/protoc"
 	"log"
 )
 

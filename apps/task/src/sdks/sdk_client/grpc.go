@@ -3,7 +3,7 @@ package sdk_client
 import (
 	"log"
 
-	"template/sdks/sdk_client/protoc"
+	"task/sdks/sdk_client/protoc"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"

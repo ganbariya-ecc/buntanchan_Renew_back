@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 	"log"
-	"template/sdks/sdk_client/protoc"
+	"task/sdks/sdk_client/protoc"
 )
 
 func Auth() (protoc.TemplateResult, error) {

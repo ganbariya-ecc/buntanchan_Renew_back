@@ -1,7 +1,8 @@
 package router
 
 import (
-	"template/controller"
+	"task/controller"
+	"task/middlewares"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -19,6 +20,8 @@ func InitRouter() *echo.Echo {
 	router.GET("/", controller.Hello)
 
 	router.POST("/atest", controller.Auth_Test)
+
+	router.POST("/gtest",controller.GroupTest,middlewares.AuthMiddleware)
 
 	return router
 }

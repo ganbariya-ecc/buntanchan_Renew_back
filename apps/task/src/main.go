@@ -3,14 +3,15 @@ package main
 import (
 	"log"
 	"os"
-	"group/model"
-	"group/router"
+	"task/model"
+	"task/router"
 
-	"group/sdks/authsdk"
+	"task/sdks/authsdk"
+	"task/sdks/groupsdk"
 
 	"github.com/joho/godotenv"
 
-	"template/sdks/sdk_server"
+	"task/sdks/sdk_server"
 )
 
 func LoadEnv() {
@@ -27,11 +28,16 @@ func main() {
 	//認証sdk 初期化
 	authsdk.Init(os.Getenv("AUTH_ADDR"), os.Getenv("AUTH_SDKKEY"))
 
+	// グループSDK 初期化
+	groupsdk.Init(os.Getenv("GROUP_ADDR"))
+
 	// モデル初期化
 	model.Init(os.Getenv("DBPATH"))
 
 	// サーバー開始
-	sdk_server.StartServer(os.Getenv("GRPC_ADDR"))
+	go sdk_server.StartServer(os.Getenv("GRPC_ADDR"))
+
+	// log.Println("サーバー起動")
 
 	// ルーター初期化
 	router := router.InitRouter()

@@ -10,7 +10,7 @@ import (
 
 	"github.com/joho/godotenv"
 
-	// "group/sdks/sdk_server"
+	"group/sdks/sdk_server"
 )
 
 func LoadEnv() {
@@ -31,7 +31,7 @@ func main() {
 	model.Init(os.Getenv("DBPATH"))
 
 	// サーバー開始
-	// sdk_server.StartServer(os.Getenv("GRPC_ADDR"))
+	go sdk_server.StartServer(os.Getenv("GRPC_ADDR"))
 
 	// ルーター初期化
 	router := router.InitRouter()

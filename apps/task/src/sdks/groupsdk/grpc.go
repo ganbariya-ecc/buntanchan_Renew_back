@@ -1,9 +1,9 @@
-package authsdk
+package groupsdk
 
 import (
 	"log"
 
-	"task/sdks/authsdk/protoc"
+	"task/sdks/groupsdk/protoc"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
@@ -13,20 +13,17 @@ var (
 	// GRPC 接続
 	gconn *grpc.ClientConn = nil
 
-	// 認証用クライアント
-	gaclient protoc.AuthServiceClient = nil
+	// GRPC クライアント
+	gclient protoc.GroupSdkServiceClient = nil
 
 	// 初期化済みか
 	isInit = false
-
-	// SDK を使うためのキー
-	sdkkey = ""
 )
 
-func Init(ServerAddr, SDKKEY string) {
+func Init(ServerAddr string) {
 	addr := ServerAddr
 	// TLS認証を追加
-	creds, err := credentials.NewClientTLSFromFile("./sdks/authsdk/server.crt", "")
+	creds, err := credentials.NewClientTLSFromFile("./sdks/groupsdk/server.crt", "")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -39,12 +36,11 @@ func Init(ServerAddr, SDKKEY string) {
 	}
 
 	// クライアント作成
-	aclient := protoc.NewAuthServiceClient(conn)
+	aclient := protoc.NewGroupSdkServiceClient(conn)
 
 	// グローバル変数に格納
-	gaclient = aclient
+	gclient = aclient
 	gconn = conn
-	sdkkey = SDKKEY
 
 	isInit = true
 }

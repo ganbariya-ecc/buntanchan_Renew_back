@@ -2,7 +2,7 @@ package sdk_server
 
 import (
 	"context"
-	"template/sdks/sdk_server/protoc"
+	"task/sdks/sdk_server/protoc"
 
 	// "auth/service"
 	"log"
