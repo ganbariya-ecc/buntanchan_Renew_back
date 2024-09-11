@@ -25,7 +25,7 @@ func Init(dbpath string) {
 	}
 
 	//マイグレーション
-	// db.AutoMigrate(User{})
+	db.AutoMigrate(Task{})
 
 	//グローバル変数に格納
 	dbconn = db
