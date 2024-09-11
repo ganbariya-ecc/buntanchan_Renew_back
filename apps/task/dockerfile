@@ -1,0 +1,7 @@
+FROM golang:1.22.3-bookworm
+
+RUN apt update
+
+WORKDIR /root/task
+
+COPY ./src .
