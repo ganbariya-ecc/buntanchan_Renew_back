@@ -54,7 +54,7 @@ func InitRouter() *echo.Echo {
 	router.Use(session.Middleware(store))
 
 	// Routes
-	// router.GET("/", controller.Hello)
+	router.GET("/icon/:userid", controller.GetIcon)
 
 	// Oauth グループ
 	oauthg := router.Group("/oauth")

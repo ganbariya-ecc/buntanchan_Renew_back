@@ -28,7 +28,7 @@ func Init() {
 	// Oauth2 プロバイダー初期化
 	goth.UseProviders(
 		discord.New(os.Getenv("Discord_ClientID"), os.Getenv("Discord_Secret"), os.Getenv("Discord_Callback")),
-		google.New(os.Getenv("Google_KEY"), os.Getenv("Google_SECRET"), os.Getenv("Google_Callback")),
+		google.New(os.Getenv("Google_KEY"), os.Getenv("Google_SECRET"), os.Getenv("Google_Callback"),"profile","email"),
 		line.New(os.Getenv("Line_KEY"), os.Getenv("Line_SECRET"), os.Getenv("Line_Callback"), "profile"),
 	)
 }
