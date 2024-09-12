@@ -79,3 +79,39 @@ func (task *Task) UpdateStatus(status Status) error {
 
 	return nil
 }
+
+// グループIDを指定して取得
+func GetTasks(groupid string) ([]Task,error) {
+	// タスクを取得
+	var tasks []Task
+
+	// 取得
+	result := dbconn.Where(Task{
+		GroupID: groupid,
+	}).Find(&tasks)
+
+	// エラー処理
+	if result.Error != nil {
+		return []Task{},result.Error
+	}
+
+	return tasks,nil
+}
+
+// グループIDを指定して取得
+func GetTask(taskid string) (Task,error) {
+	// タスクを取得
+	var task Task
+
+	// 取得
+	result := dbconn.Where(Task{
+		TaskID: taskid,
+	}).First(&task)
+
+	// エラー処理
+	if result.Error != nil {
+		return Task{},result.Error
+	}
+
+	return task,nil
+}

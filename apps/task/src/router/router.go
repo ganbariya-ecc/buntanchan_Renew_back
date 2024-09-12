@@ -24,7 +24,10 @@ func InitRouter() *echo.Echo {
 	router.POST("/gtest",controller.GroupTest,middlewares.AuthMiddleware)
 
 	router.POST("/create",controller.CreateTask,middlewares.AuthMiddleware)
-	router.POST("/taskimg",controller.CreateTask,middlewares.AuthMiddleware)
+	router.POST("/upimg",controller.UploadTaskImg,middlewares.AuthMiddleware)
+	router.POST("/taskimg",controller.UploadTaskImg,middlewares.AuthMiddleware)
+	router.GET("/tasks",controller.GetTasks,middlewares.AuthMiddleware)
+	router.GET("/info",controller.GetTask,middlewares.AuthMiddleware)
 
 	return router
 }

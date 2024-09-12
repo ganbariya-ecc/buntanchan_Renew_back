@@ -16,3 +16,4 @@ auth/src/sdks/cert/ca.srl
 apps/group/src/.env
 apps/group/src/group.db
 apps/task/src/task.db
+apps/task/src/assets/TaskImages/
