@@ -19,8 +19,8 @@ RUN go mod download
 # # ビルド成果物にデバック情報が含まれないようにする
 # # RUN go build -x -ldflags '-s -w' -o ./server
 
-# # 実行するコマンド
-# CMD ["go","run","-x","."]
+# 実行するコマンド
+CMD ["go","run","-x","."]
 
 # FROM debian:stable-slim as runner
 
