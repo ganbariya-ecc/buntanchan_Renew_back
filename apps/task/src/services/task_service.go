@@ -5,6 +5,7 @@ import (
 	"log"
 	"mime/multipart"
 	"net/http"
+	"os"
 	"path"
 	"task/model"
 	"task/sdks/groupsdk"
@@ -139,4 +140,35 @@ func UploadTaskImg(img *multipart.FileHeader,uploader protoc.MemberData,taskID s
 	}
 
 	return nil
+}
+
+func GetImage(taskid string,getter protoc.MemberData) (string,*utils.HttpError) {
+	// タスクを取得する
+	task,err := model.GetTask(taskid)
+
+	// エラー処理
+	if err != nil {
+		return "",utils.NewHttpError(http.StatusInternalServerError,"failed to get task")
+	}
+
+	// 自分のグループのタスクか
+	if (task.GroupID != getter.GroupID) {
+		return "",utils.NewHttpError(http.StatusForbidden,"Not authorized to retrieve images")
+	}
+
+	// 画像パス
+	imgPath := path.Join(model.TaskImageDir,task.TaskID + ".jpeg")
+
+	// ファイルが存在するか
+	if Exists(imgPath) {
+		// 存在する場合パスを返す
+		return imgPath,nil
+	}
+
+	return "",utils.NewHttpError(http.StatusNotFound,"file not found")
+}
+
+func Exists(filename string) bool {
+    _, err := os.Stat(filename)
+    return err == nil
 }

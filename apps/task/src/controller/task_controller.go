@@ -152,3 +152,28 @@ func UploadTaskImg(ctx echo.Context) error {
 
 	return ctx.NoContent(http.StatusOK)
 }
+
+func GetTaskImg(ctx echo.Context) error {
+	// 取得者のデータ
+	member_data := ctx.Get("member").(protoc.MemberData)
+
+	// TaskID 取得
+	taskid := ctx.Request().Header.Get("taskid")
+
+	// タスク画像を取得する
+	imgPath,err := services.GetImage(taskid,member_data)
+
+	// エラー処理
+	if err != nil {
+		//404 の場合
+		if err.Status == http.StatusNotFound {
+			return ctx.File("./assets/defaultImages/404.jpg")
+		}
+	
+		log.Println("failed to get image : " + err.Error())
+		return ctx.JSON(err.Status,err.Message)
+	}
+
+	// 画像を返す
+	return ctx.File(imgPath)
+}
